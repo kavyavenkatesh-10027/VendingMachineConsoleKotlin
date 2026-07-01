@@ -13,6 +13,8 @@ open class Product(
     val manufacturingDate: LocalDate,
     var warning: String? = null
 ) {
+    val productId = Generator.generateProductId();
+
     init {
         require(productName.isNotBlank()) { "Product must have a name" }
         require(brand.isNotBlank()) { "Product must have a brand" }
@@ -21,7 +23,6 @@ open class Product(
         require(manufacturingDate <= LocalDate.now()) {
             "Manufacturing date must be on or before today"
         }
-        val productId = Generator.generateProductId();
         //Runs after primary const
     }
 }
