@@ -14,9 +14,8 @@ class Admin(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other == null || this::class != other::class) return false
+        if (other !is Admin) return false
 
-        other as Admin
         return adminId == other.adminId
     }
 

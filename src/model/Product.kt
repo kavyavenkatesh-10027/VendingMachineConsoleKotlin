@@ -5,7 +5,6 @@ import java.math.BigDecimal
 import java.time.LocalDate
 
 open class Product(
-    val productId: String = Generator.generateProductId(),
     var productName: String,
     var brand: String,
     var description: String,
@@ -22,5 +21,7 @@ open class Product(
         require(manufacturingDate <= LocalDate.now()) {
             "Manufacturing date must be on or before today"
         }
+        val productId = Generator.generateProductId();
+        //Runs after primary const
     }
 }

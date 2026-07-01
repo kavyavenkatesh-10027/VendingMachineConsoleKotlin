@@ -20,9 +20,9 @@ class Drawer {
     }
 
     fun add(denomination: IndianCurrency, count: Int) {
-        if (count <= 0) {
-            throw VendingMachineException("Cannot add zero or negative amount of denomination")
-        }
+        require(count > 0) {
+            "Count must be greater than zero."
+        }//Could have been prevented with a better argument
 
         denominations[denomination] = getCount(denomination) + count
     }
