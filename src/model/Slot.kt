@@ -39,6 +39,11 @@ class Slot(
         """
     Slot ID                : $slotId
     Vending Machine ID     : $vendingMachineId
-    Food Items             : $foodItemsInSlot
+    Food Items:
+    ${
+            foodItemsInSlot.entries.joinToString("\n") {
+                "  ${it.key} -> ${it.value}"
+            }
+        }
     """.trimIndent()
 }
