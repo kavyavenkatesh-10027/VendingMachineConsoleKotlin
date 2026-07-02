@@ -28,4 +28,5 @@ class ConsumerController : BaseController() {
 
     fun getAvailableStock(vendingMachineId: String, foodId: String): Int =
         getAvailableQuantityForOneProduct(vendingMachineId, foodId)
+
 }
