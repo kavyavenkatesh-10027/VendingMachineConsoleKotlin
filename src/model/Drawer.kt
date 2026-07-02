@@ -53,4 +53,16 @@ class Drawer {
 
         return total
     }
+
+    override fun toString(): String =
+        """
+    Drawer
+    ------
+    ${
+            denominations.entries.joinToString("\n") {
+                "${it.key} : ${it.value}"
+            }
+        }
+    Total Cash : ₹${totalCash()}
+    """.trimIndent()
 }
