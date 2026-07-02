@@ -25,4 +25,13 @@ class VendingMachine(
     fun removeSlotFromVendingMachine(slot: Slot) {
         slotsInVendingMachine.remove(slot)
     }
+
+    override fun toString(): String =
+        """
+    Vending Machine ID      : $vendingMachineId
+    Location                : $vendingMachineLocation
+    Established On          : $establishedOn
+    Number of Slots         : ${slotsInVendingMachine.size}
+    Cash Available          : ₹${drawer.totalCash()}
+    """.trimIndent()
 }
