@@ -34,4 +34,11 @@ class Slot(
     fun removeFoodTypeFromSlot(foodId: String) {
         foodItemsInSlot.remove(foodId)
     }
+
+    override fun toString(): String =
+        """
+    Slot ID                : $slotId
+    Vending Machine ID     : $vendingMachineId
+    Food Items             : $foodItemsInSlot
+    """.trimIndent()
 }
