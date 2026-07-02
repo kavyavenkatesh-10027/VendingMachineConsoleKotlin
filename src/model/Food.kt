@@ -39,4 +39,13 @@ class Food(
         require(ingredient in ingredients)
         ingredients.remove(ingredient)
     }
+
+    override fun toString(): String =
+        """
+    ${super.toString()}
+    Food Type               : $foodType
+    Category                : $vegOrNonVeg
+    Ingredients             : ${ingredients.joinToString(", ")}
+    Expiry Date             : $expiryDate
+    """.trimIndent()
 }

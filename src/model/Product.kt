@@ -13,7 +13,7 @@ open class Product(
     val manufacturingDate: LocalDate,
     var warning: String? = null
 ) {
-    val productId = Generator.generateProductId();
+    val productId = Generator.generateProductId()
 
     init {
         require(productName.isNotBlank()) { "Product must have a name" }
@@ -25,4 +25,16 @@ open class Product(
         }
         //Runs after primary const
     }
+
+    override fun toString(): String =
+        """
+    Product ID              : $productId
+    Name                    : $productName
+    Brand                   : $brand
+    Description             : $description
+    Price                   : ₹$price
+    Manufactured At         : $manufacturingLocation
+    Manufacturing Date      : $manufacturingDate
+    Warning                 : ${warning ?: "None"}
+    """.trimIndent()
 }
