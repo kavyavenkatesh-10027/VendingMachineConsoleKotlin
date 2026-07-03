@@ -4,9 +4,10 @@ import util.Generator
 
 class Slot(
     val vendingMachineId: String,
-    val foodItemsInSlot: MutableMap<String, Int>
+    foodItemsInSlot: MutableMap<String, Int>
 ) {
     val slotId = Generator.generateSlotId()
+    val foodItemsInSlot: MutableMap<String, Int> = foodItemsInSlot.toMutableMap()// To prevent external mutation of the entry
 
     init {
         require(vendingMachineId.isNotBlank())

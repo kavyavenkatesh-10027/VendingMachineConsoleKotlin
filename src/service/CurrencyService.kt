@@ -14,6 +14,10 @@ import kotlin.plus
 object CurrencyService {
 
     fun acceptPayment(drawer: Drawer, inserted: Map<IndianCurrency, Int>): BigDecimal {
+        for ((_, count) in inserted) {
+            if (count <= 0) throw VendingMachineException("Count cannot be zero or negative.")
+        }
+
         var total = BigDecimal.ZERO
         for ((denomination, count) in inserted) {  // destructuring map entries with for ((k, v) in $%map)
             if (count <= 0) throw VendingMachineException("Count cannot be zero or negative.")
