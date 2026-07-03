@@ -18,4 +18,14 @@ data class Purchase(
         require(moneyPaidByCustomer >= BigDecimal.ZERO)
         require(moneyToBeReturnedByVendingMachine >= BigDecimal.ZERO)
     }
+
+    override fun toString(): String =
+        """
+    Purchase ID             : $purchaseId
+    Purchase Time           : $purchaseTime
+    Products                : $quantityOfProductsPurchased
+    Total Amount            : ₹$totalAmount
+    Amount Paid             : ₹$moneyPaidByCustomer
+    Change Returned         : ₹$moneyToBeReturnedByVendingMachine
+    """.trimIndent()
 }
