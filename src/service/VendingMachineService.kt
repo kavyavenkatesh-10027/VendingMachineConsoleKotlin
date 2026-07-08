@@ -23,7 +23,7 @@ object VendingMachineService {
         if (establishedOn.isAfter(LocalDate.now())) {
             throw VendingMachineException("Established date cannot be in the future.")
         }
-        val vm = VendingMachine(location, establishedOn, mutableListOf())
+        val vm = VendingMachine(location, establishedOn)
         VendingMachineRepository.add(vm)
 
         val firstSlot = buildSlotForMachine(vm.vendingMachineId, firstSlotFoodItems)
@@ -42,7 +42,7 @@ object VendingMachineService {
 
     private fun buildSlotForMachine(vendingMachineId: String, foodItems: Map<String, Int>): Slot {
         validateFoodItems(foodItems)
-        return Slot(vendingMachineId, foodItems as MutableMap<String, Int>)
+        return Slot(vendingMachineId, foodItems.toMutableMap())
     }
 
     fun getVendingMachineById(vendingMachineId: String): VendingMachine =
@@ -51,18 +51,18 @@ object VendingMachineService {
     fun viewAvailableProducts(vendingMachineId: String): Set<Food> {
         val vendingMachine = getVendingMachineById(vendingMachineId)
 
-        return vendingMachine.slotsInVendingMachine
+        return vendingMachine.getSlotsInVendingMachine()
             .flatMap { slot ->
-                slot.foodItemsInSlot.entries
+                slot.getFoodItemsInSlot().entries
             }//for destructuring
             .filter { (_, quantity) ->
                 quantity > 0
             }
-            .mapNotNull { (foodId, _) ->
+            .map { (foodId, _) ->
                 try {
                     FoodRepository.findById(foodId)
                 } catch (e: Exception) {
-                    null
+                    throw VendingMachineException("Vending machine data has been corrupted. $vendingMachineId contains unregistered food item, ID : $foodId ")
                 }
             }
             .toSet()
@@ -71,8 +71,8 @@ object VendingMachineService {
     fun viewAvailableQuantityForAllProducts(vendingMachineId: String): Map<String, Int> {
         val vm = getVendingMachineById(vendingMachineId)
         val result = mutableMapOf<String, Int>()
-        for (slot in vm.slotsInVendingMachine) {
-            for ((foodId, qty) in slot.foodItemsInSlot) {
+        for (slot in vm.getSlotsInVendingMachine()) {
+            for ((foodId, qty) in slot.getFoodItemsInSlot()) {
                 if (qty > 0) result[foodId] = (result[foodId] ?: 0) + qty
             }
         }
@@ -84,7 +84,7 @@ object VendingMachineService {
             throw VendingMachineException("Cannot check quantity for a product that does not exist")
         }
         val vm = getVendingMachineById(vendingMachineId)
-        return vm.slotsInVendingMachine.sumOf { slot -> slot.foodItemsInSlot[foodId] ?: 0 }
+        return vm.getSlotsInVendingMachine().sumOf { slot -> slot.getFoodItemsInSlot()[foodId] ?: 0 }
     }
 
     fun removeVendingMachine(vendingMachineId: String) {

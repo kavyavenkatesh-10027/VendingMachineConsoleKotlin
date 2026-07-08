@@ -5,7 +5,6 @@ import repository.FoodRepository
 import util.FoodType
 import util.Location
 import util.VegNonVeg
-import util.VendingMachineException
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -17,9 +16,6 @@ object FoodService {
         manufacturingDate: LocalDate, vegOrNonVeg: VegNonVeg,
         ingredients: List<String>, expiryDate: LocalDate, foodType: FoodType
     ): Food {
-        if (expiryDate.isBefore(LocalDate.now())) {
-            throw VendingMachineException("Cannot register an already-expired food item.")
-        }
         val food = Food(
             productName = productName,
             brand = brand,

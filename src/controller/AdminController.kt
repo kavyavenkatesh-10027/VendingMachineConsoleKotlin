@@ -46,8 +46,6 @@ class AdminController : BaseController() {
         if (price <= BigDecimal.ZERO) throw VendingMachineException("Price cannot be zero or negative.")
         if (manufacturingDate.isAfter(LocalDate.now())) throw VendingMachineException("Manufacturing date cannot be in the future.")
         if (ingredients.isEmpty()) throw VendingMachineException("At least one ingredient must be provided.")
-        if (expiryDate.isBefore(LocalDate.now())) throw VendingMachineException("Cannot register an already-expired food item.")
-        if (!expiryDate.isAfter(manufacturingDate)) throw VendingMachineException("Expiry date must be after the manufacturing date.")
         return FoodService.registerFood(
             productName, brand, description, warning, price,
             manufacturingLocation, manufacturingDate, vegOrNonVeg,
@@ -98,8 +96,6 @@ class AdminController : BaseController() {
         //Warning can be blank, therefore no issues
         FoodService.editWarning(foodId, newWarning)
     }
-
-    fun getAllVendingMachines(): Set<VendingMachine> = VendingMachineService.getAllVendingMachines()
 
     fun removeVendingMachine(vendingMachineId: String) {
         if (vendingMachineId.isBlank()) throw VendingMachineException("Vending machine ID cannot be null or empty.")

@@ -15,7 +15,7 @@ object SlotService {
         if (!FoodRepository.existsById(foodId)) {
             throw VendingMachineException("Food with ID $foodId does not exist. Register the food first.")
         }
-        if (slot.foodItemsInSlot.containsKey(foodId)) {
+        if (slot.getFoodItemsInSlot().containsKey(foodId)) {
             throw VendingMachineException("Food $foodId is already in slot $slotId. Use refillFoodInSlot instead.")
         }
         slot.addNewFoodTypeToSlot(foodId, quantity)
@@ -23,7 +23,7 @@ object SlotService {
 
     fun removeFoodTypeFromSlot(foodId: String) {
         SlotRepository.findAll().forEach { slot ->
-            if (slot.foodItemsInSlot.containsKey(foodId)) {
+            if (slot.getFoodItemsInSlot().containsKey(foodId)) {
                 slot.removeFoodTypeFromSlot(foodId)
             }
         }
@@ -31,7 +31,7 @@ object SlotService {
 
     fun refillFoodInSlot(slotId: String, foodId: String, quantity: Int) {
         val slot = getSlotById(slotId)
-        if (!slot.foodItemsInSlot.containsKey(foodId)) {
+        if (!slot.getFoodItemsInSlot().containsKey(foodId)) {
             throw VendingMachineException("Food $foodId is not in slot $slotId. Use addNewFoodTypeToSlot instead.")
         }
         slot.addMoreOfFoodItemToSlot(foodId, quantity)

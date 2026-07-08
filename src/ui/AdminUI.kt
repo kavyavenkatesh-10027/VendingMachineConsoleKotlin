@@ -7,7 +7,7 @@ import java.util.Scanner
 
 class AdminUI(private val scanner: Scanner) : Interactable {
 
-    private val adminController = AdminController()
+    private val controller = AdminController()
 
     fun show() {
         var running = true
@@ -60,7 +60,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
                     "0"  -> running = false
                     else -> println("Invalid choice. Please try again.")
                 }
-            } catch (e: VendingMachineException) {
+            } catch (e: Exception) {
                 println("[Error] ${e.message}")
             }
         }
@@ -71,7 +71,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         val location = readEnum(Location::class.java, "Location")
         val establishedOn = readDate("Established on (yyyy-MM-dd): ")
         val firstSlotFoodItems = readFoodItemsMap("first slot")
-        val vm = adminController.createVendingMachine(location, establishedOn, firstSlotFoodItems)
+        val vm = controller.createVendingMachine(location, establishedOn, firstSlotFoodItems)
         println("\nVending machine created successfully!")
         println(vm)
     }
@@ -79,7 +79,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
     private fun removeVendingMachine() {
         println("\n--- Remove Vending Machine ---")
         val vmId = prompt("Vending machine ID to remove: ")
-        adminController.removeVendingMachine(vmId)
+        controller.removeVendingMachine(vmId)
         println("Vending machine $vmId and all its slots have been removed.")
     }
 
@@ -87,7 +87,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         println("\n--- Add Slot to Vending Machine ---")
         val vendingMachineId = prompt("Vending machine ID: ")
         val foodItems = readFoodItemsMap("new slot")
-        val slot = adminController.addSlotToVendingMachine(vendingMachineId, foodItems)
+        val slot = controller.addSlotToVendingMachine(vendingMachineId, foodItems)
         println("\nSlot added successfully!")
         println(slot)
     }
@@ -95,7 +95,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
     private fun removeSlot() {
         println("\n--- Remove Slot ---")
         val slotId = prompt("Slot ID to remove: ")
-        adminController.removeSlot(slotId)
+        controller.removeSlot(slotId)
         println("Slot $slotId removed.")
     }
 
@@ -104,8 +104,8 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         val productName = prompt("Product name: ")
         val brand = prompt("Brand: ")
         val description = prompt("Description: ")
-        var warning: String? = prompt("Warning (press Enter to skip): ")
-        if (warning!!.isEmpty()) warning = null
+        var warning: String = prompt("Warning (press Enter to skip): ")
+        if (warning.isEmpty()) warning = "- nil -"
 
         val price = readBigDecimal("Price: ")
         val manufacturingLocation = readEnum(Location::class.java, "Manufacturing location")
@@ -118,7 +118,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
 
         val foodType = readEnum(FoodType::class.java, "Food type")
 
-        val food = adminController.registerFood(
+        val food = controller.registerFood(
             productName, brand, description, warning,
             price, manufacturingLocation, manufacturingDate, vegOrNonVeg,
             ingredients, expiryDate, foodType
@@ -130,7 +130,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
     private fun removeFood() {
         println("\n--- Remove Food Item ---")
         val foodId = prompt("Food ID to remove: ")
-        adminController.removeFood(foodId)
+        controller.removeFood(foodId)
         println("Food $foodId removed from registry and from all slots.")
     }
 
@@ -139,7 +139,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         val slotId = prompt("Slot ID: ")
         val foodId = prompt("Food ID: ")
         val quantity = readInt("Quantity")
-        adminController.addNewFoodTypeToSlot(slotId, foodId, quantity)
+        controller.addNewFoodTypeToSlot(slotId, foodId, quantity)
         println("Food added to slot successfully.")
     }
 
@@ -148,7 +148,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         val slotId = prompt("Slot ID: ")
         val foodId = prompt("Food ID: ")
         val quantity = readInt("Quantity to add")
-        adminController.refillFoodInSlot(slotId, foodId, quantity)
+        controller.refillFoodInSlot(slotId, foodId, quantity)
         println("Slot refilled successfully.")
     }
 
@@ -156,7 +156,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         println("\n--- Edit Food Description ---")
         val foodId = prompt("Food ID: ")
         val newDescription = prompt("New description: ")
-        adminController.editFoodDescription(foodId, newDescription)
+        controller.editFoodDescription(foodId, newDescription)
         println("Description updated.")
     }
 
@@ -164,7 +164,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         println("\n--- Edit Food Name ---")
         val foodId = prompt("Food ID: ")
         val newName = prompt("New name: ")
-        adminController.editFoodName(foodId, newName)
+        controller.editFoodName(foodId, newName)
         println("Name updated.")
     }
 
@@ -172,7 +172,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         println("\n--- Edit Food Price ---")
         val foodId = prompt("Food ID: ")
         val newPrice = readBigDecimal("New price: ")
-        adminController.editFoodPrice(foodId, newPrice)
+        controller.editFoodPrice(foodId, newPrice)
         println("Price updated.")
     }
 
@@ -180,7 +180,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         println("\n--- Edit Food Brand ---")
         val foodId = prompt("Food ID: ")
         val newBrand = prompt("New brand: ")
-        adminController.editFoodBrand(foodId, newBrand)
+        controller.editFoodBrand(foodId, newBrand)
         println("Brand updated.")
     }
 
@@ -189,19 +189,19 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         val foodId = prompt("Food ID: ")
         var newWarning: String? = prompt("New warning (press Enter to clear): ")
         if (newWarning!!.isEmpty()) newWarning = null
-        adminController.editFoodWarning(foodId, newWarning)
+        controller.editFoodWarning(foodId, newWarning)
         println("Warning updated.")
     }
 
     private fun viewAllVendingMachines() {
-        val machines = adminController.getAllVendingMachines()
+        val machines = controller.viewAllVendingMachines()
         if (machines.isEmpty()) { println("No vending machines registered yet."); return }
         println("\n===== All Vending Machines =====")
         machines.forEach { println("$it\n--------------------------------") }
     }
 
     private fun viewAllFoods() {
-        val foods = adminController.getAllFoods()
+        val foods = controller.getAllFoods()
         if (foods.isEmpty()) { println("No food items registered yet."); return }
         println("\n===== All Food Items =====")
         foods.forEach { println("$it\n-------------------------") }
@@ -210,12 +210,12 @@ class AdminUI(private val scanner: Scanner) : Interactable {
     private fun viewProductCount() {
         println("\n--- Product Count at Machine ---")
         val vmId = prompt("Vending machine ID: ")
-        val stockMap = adminController.getProductCountForMachine(vmId)
+        val stockMap = controller.getProductCountForMachine(vmId)
         if (stockMap.isEmpty()) { println("No products currently stocked."); return }
         println("\n  %-14s %-22s %8s  %6s".format("Food ID", "Name", "Price", "Stock"))
         println("  ──────────────────────────────────────────────────")
         for ((foodId, qty) in stockMap) {
-            val food = adminController.getFoodById(foodId)
+            val food = controller.getFoodById(foodId)
             println("  %-14s %-22s Rs.%-5s  %6d".format(food.productId, food.productName, food.price, qty))
         }
         val total = stockMap.values.sum()
@@ -226,10 +226,10 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         println("\n--- View Cash Drawer ---")
         val vmId = prompt("Vending machine ID: ")
         println("\n===== Cash Drawer — $vmId =====")
-        adminController.getDenominationBreakdown(vmId).forEach { (denom, count) ->
+        controller.getDenominationBreakdown(vmId).forEach { (denom, count) ->
             println("  Rs.%-4d  x  %d".format(denom.value, count))
         }
-        println("  Total : Rs.${adminController.getTotalCashInMachine(vmId)}")
+        println("  Total : Rs.${controller.getTotalCashInMachine(vmId)}")
     }
 
     private fun addCashToDrawer() {
@@ -238,7 +238,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         val denominations = EnumMap<IndianCurrency, Int>(IndianCurrency::class.java)
 
         println("Enter how many of each denomination to add (Enter to skip):")
-        for (denom in IndianCurrency.values()) {
+        for (denom in IndianCurrency.entries) {
             val input = prompt("  Rs.${denom.value}: ")
             if (input.isEmpty()) continue
             try {
@@ -252,22 +252,22 @@ class AdminUI(private val scanner: Scanner) : Interactable {
 
         if (denominations.isEmpty()) { println("Nothing added."); return }
 
-        adminController.addCashToDrawer(vmId, denominations)
+        controller.addCashToDrawer(vmId, denominations)
         println("\nCash added. Current drawer for $vmId:")
-        adminController.getDenominationBreakdown(vmId).forEach { (denom, count) ->
+        controller.getDenominationBreakdown(vmId).forEach { (denom, count) ->
             println("  Rs.%-4d  x  %d".format(denom.value, count))
         }
-        println("  Total : Rs.${adminController.getTotalCashInMachine(vmId)}")
+        println("  Total : Rs.${controller.getTotalCashInMachine(vmId)}")
     }
 
     private fun viewPurchaseHistory() {
-        val purchases = adminController.getAllPurchases()
+        val purchases = controller.getAllPurchases()
         if (purchases.isEmpty()) { println("No purchases recorded yet."); return }
         println("\n===== Purchase History =====")
         for (p in purchases) {
             println("  ID     : ${p.purchaseId}")
             println("  Time   : ${p.purchaseTime}")
-            println("  Items  : ${p.quantityOfProductsPurchased}")
+            println("  Items  : ${p.getQuantityOfProductsPurchased()}")
             println("  Total  : Rs.${p.totalAmount}")
             println("  Paid   : Rs.${p.moneyPaidByCustomer}")
             println("  Change : Rs.${p.moneyToBeReturnedByVendingMachine}")

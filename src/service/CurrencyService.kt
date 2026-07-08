@@ -13,12 +13,7 @@ import kotlin.plus
 
 object CurrencyService {
 
-    fun acceptPayment(drawer: Drawer, inserted: Map<IndianCurrency, Int>): BigDecimal {
-        for ((_, count) in inserted) {
-            if (count <= 0) throw VendingMachineException("Count cannot be zero or negative.")
-        }
-
-        var total = BigDecimal.ZERO
+    fun acceptPayment(drawer: Drawer, inserted: Map<IndianCurrency, Int>): BigDecimal {var total = BigDecimal.ZERO
         for ((denomination, count) in inserted) {  // destructuring map entries with for ((k, v) in $%map)
             if (count <= 0) throw VendingMachineException("Count cannot be zero or negative.")
             drawer.add(denomination, count)
@@ -29,7 +24,7 @@ object CurrencyService {
 
     fun makeChange(drawer: Drawer, changeAmount: BigDecimal): Map<IndianCurrency, Int> {
         if (changeAmount < BigDecimal.ZERO) throw VendingMachineException("Change amount cannot be negative.")
-        if (changeAmount == BigDecimal.ZERO) return emptyMap()
+        if (changeAmount.compareTo(BigDecimal.ZERO) == 0) return emptyMap()
 
         val change = EnumMap<IndianCurrency, Int>(IndianCurrency::class.java)//enum requires a java class
         var remaining = changeAmount

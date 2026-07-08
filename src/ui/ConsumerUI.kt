@@ -35,7 +35,7 @@ class ConsumerUI(private val scanner: Scanner) : Interactable {
                     "0"  -> running = false
                     else -> println("  Invalid choice, please enter a choice from 0–3.")
                 }
-            } catch (e: VendingMachineException) {
+            } catch (e: Exception) {
                 println("\n  [!] ${e.message}")
             }
         }
@@ -52,7 +52,7 @@ class ConsumerUI(private val scanner: Scanner) : Interactable {
             println("  ID       : ${vm.vendingMachineId}")
             println("  Location : ${vm.vendingMachineLocation}")
             println("  Since    : ${vm.establishedOn}")
-            println("  Slots    : ${vm.slotsInVendingMachine.size}")
+            println("  Slots    : ${vm.getSlotsInVendingMachine().size}")
             println("─────────────────────────────────────")
         }
     }
@@ -127,7 +127,7 @@ class ConsumerUI(private val scanner: Scanner) : Interactable {
         var paid = BigDecimal.ZERO
 
         println("\n  Accepted denominations:")
-        IndianCurrency.values().forEach { print("  ${it.name}(Rs.${it.value})") }
+        IndianCurrency.entries.forEach { print("  ${it.name}(Rs.${it.value})") }
         println()
         println("  Type a denomination name to insert it, or DONE to cancel.\n")
 
@@ -160,7 +160,7 @@ class ConsumerUI(private val scanner: Scanner) : Interactable {
         println("=====================================")
         println("  Purchase ID : ${purchase.purchaseId}")
         println("  Time        : ${purchase.purchaseTime}")
-        println("  Items       : ${purchase.quantityOfProductsPurchased}")
+        println("  Items       : ${purchase.getQuantityOfProductsPurchased()}")
         println("  Total       : Rs.${purchase.totalAmount}")
         println("  Paid        : Rs.${purchase.moneyPaidByCustomer}")
         println("  Change      : Rs.${purchase.moneyToBeReturnedByVendingMachine}")

@@ -51,22 +51,28 @@ object PurchaseService {
         return purchase
     }
 
-    private fun calculateTotal(cart: Map<String, Int>): BigDecimal =
-        cart.entries.fold(BigDecimal.ZERO) { sum, (foodId, qty) ->
-            sum + FoodRepository.findById(foodId).price * BigDecimal.valueOf(qty.toLong())
-        }//todo
+    private fun calculateTotal(cart: Map<String, Int>): BigDecimal {
+        var total = BigDecimal.ZERO
+
+        for ((foodId, quantity) in cart) {
+            val food = FoodRepository.findById(foodId)
+            total += food.price * BigDecimal.valueOf(quantity.toLong())
+        }
+
+        return total
+    }
 
     fun getCartTotal(cart: Map<String, Int>): BigDecimal = calculateTotal(cart)
 
     fun getStockInMachine(vm: VendingMachine, foodId: String): Int =
-        vm.slotsInVendingMachine.sumOf { it.foodItemsInSlot[foodId] ?: 0 }
+        vm.getSlotsInVendingMachine().sumOf { it.getFoodItemsInSlot()[foodId] ?: 0 }
 
     private fun deductStockFromSlots(vm: VendingMachine, cart: Map<String, Int>) {
         for ((foodId, requestedQty) in cart) {
             var remaining = requestedQty
-            for (slot in vm.slotsInVendingMachine) {
+            for (slot in vm.getSlotsInVendingMachine()) {
                 if (remaining <= 0) break
-                val inSlot = slot.foodItemsInSlot[foodId] ?: 0
+                val inSlot = slot.getFoodItemsInSlot()[foodId] ?: 0
                 if (inSlot > 0) {
                     val deduct = minOf(inSlot, remaining)
                     slot.removeFoodItemFromSlot(foodId, deduct)
