@@ -60,7 +60,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
                     "0"  -> running = false
                     else -> println("Invalid choice. Please try again.")
                 }
-            } catch (e: Exception) {
+            } catch (e: VendingMachineException) {
                 println("[Error] ${e.message}")
             }
         }

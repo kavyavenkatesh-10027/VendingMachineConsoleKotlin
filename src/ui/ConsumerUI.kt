@@ -35,7 +35,7 @@ class ConsumerUI(private val scanner: Scanner) : Interactable {
                     "0"  -> running = false
                     else -> println("  Invalid choice, please enter a choice from 0–3.")
                 }
-            } catch (e: Exception) {
+            } catch (e: VendingMachineException) {
                 println("\n  [!] ${e.message}")
             }
         }
