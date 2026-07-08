@@ -2,7 +2,7 @@ package repository
 
 import util.VendingMachineException
 
-abstract class BaseRepository<T> {
+abstract class BaseRepository<T : Any> {//Now T can be anything other than null
 
     protected val store = mutableMapOf<String, T>()
 
