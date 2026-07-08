@@ -20,9 +20,7 @@ class Drawer {
     }
 
     fun add(denomination: IndianCurrency, count: Int) {
-        require(count > 0) {
-            "Count must be greater than zero."
-        }//Could have been prevented with a better argument
+        if (count <= 0) throw VendingMachineException("Count must be greater than zero.")
 
         denominations[denomination] = getCount(denomination) + count
     }
@@ -30,6 +28,7 @@ class Drawer {
     fun deduct(denomination: IndianCurrency, count: Int) {
         val current = getCount(denomination)
 
+        if (count <= 0) throw VendingMachineException("Entered value must be greater than zero.")
         if (count > current) {
             throw VendingMachineException("Insufficient denomination to deduct.")
         }

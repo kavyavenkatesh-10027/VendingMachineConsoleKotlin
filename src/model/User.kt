@@ -1,6 +1,7 @@
 package model
 
 import util.Gender
+import util.VendingMachineException
 import java.time.LocalDate
 
 abstract class User(
@@ -10,12 +11,12 @@ abstract class User(
 ) {
 
     init {
-        require(name.isNotBlank()) {
-            "Name cannot be empty"
+        if (name.isBlank()) {
+            throw VendingMachineException("Name cannot be empty")
         }
 
-        require(!dob.isAfter(LocalDate.now())) {
-            "Date of Birth must be on or before the current date"
+        if (dob.isAfter(LocalDate.now())) {
+            throw VendingMachineException("Date of Birth must be on or before the current date")
         }
     }
 

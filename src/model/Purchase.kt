@@ -5,18 +5,24 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 data class Purchase(
-    val quantityOfProductsPurchased: Map<String, Int>,
+    private val quantityOfProductsPurchased: Map<String, Int>,
     val totalAmount: BigDecimal,
     val moneyPaidByCustomer: BigDecimal,
     val moneyToBeReturnedByVendingMachine: BigDecimal,
-    val purchaseId: String = Generator.generatePurchaseId(),
     val purchaseTime: LocalDateTime = LocalDateTime.now()
 ) {
+
+    val purchaseId: String = Generator.generatePurchaseId()
+
+    fun getQuantityOfProductsPurchased(): Map<String, Int> {
+        return quantityOfProductsPurchased.toMap() // Returns a read-only copy
+    }
+
     init {
-        require(quantityOfProductsPurchased.isNotEmpty())
-        require(totalAmount >= BigDecimal.ZERO)
-        require(moneyPaidByCustomer >= BigDecimal.ZERO)
-        require(moneyToBeReturnedByVendingMachine >= BigDecimal.ZERO)
+        if (quantityOfProductsPurchased.isEmpty()) throw VendingMachineException("Purchase cannot be made with an empty cart. Apologies!")
+        if (totalAmount <= BigDecimal.ZERO) throw VendingMachineException("Price cannot be negative or zero")
+        if (moneyPaidByCustomer <= BigDecimal.ZERO) throw VendingMachineException("Cash paid cannot be negative or zero")
+        if (moneyToBeReturnedByVendingMachine < BigDecimal.ZERO) throw VendingMachineException("Change cannot be negative. Only zero or a positive value")
     }
 
     override fun toString(): String =

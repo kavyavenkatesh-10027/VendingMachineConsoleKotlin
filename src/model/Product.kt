@@ -23,8 +23,16 @@ open class Product(
         require(manufacturingDate <= LocalDate.now()) {
             "Manufacturing date must be on or before today"
         }
-        //Runs after primary const
+        //Runs along with primary const
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Product) return false
+        return productId == other.productId
+    }
+
+    override fun hashCode(): Int = productId.hashCode()
 
     override fun toString(): String =
         """

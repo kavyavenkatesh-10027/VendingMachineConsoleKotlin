@@ -12,10 +12,10 @@ class Food(
     manufacturingLocation: Location,
     manufacturingDate: LocalDate,
     val vegOrNonVeg: VegNonVeg,
-    val ingredients: MutableList<String>,
+    private val ingredients: MutableList<String>,
     val expiryDate: LocalDate,
     val foodType: FoodType,
-    warning: String? = null
+    warning: String? = null,
 ) : Product(
     productName = productName,
     brand = brand,
@@ -26,23 +26,31 @@ class Food(
     warning = warning
 ) {
 
+    fun getIngredients(): List<String> {
+        return ingredients.toList() // Returns a read-only copy
+    }
+
     init {
-        require(ingredients.isNotEmpty()) { "Ingredients must be provided" }
+        if (ingredients.isEmpty()) throw VendingMachineException("Ingredients must be provided")
+        if (!expiryDate.isAfter(LocalDate.now())) throw VendingMachineException("Cannot register an already-expired food item.")
+        if (!expiryDate.isAfter(manufacturingDate)) throw VendingMachineException("Expiry date must be after the manufacturing date.")
     }
 
     fun addIngredient(ingredient: String) {
-        require(ingredient.isNotBlank())
+        if (ingredient.isBlank()) throw VendingMachineException("A product cannot have a blank ingredient")
         ingredients.add(ingredient)
     }
 
     fun removeIngredient(ingredient: String) {
-        require(ingredient in ingredients)
+        if (ingredient !in ingredients) {
+            throw VendingMachineException("Ingredient : $ingredient hasn't been listed for\n Food Id : $productId \n Food Name : $productName")
+        }
         ingredients.remove(ingredient)
     }
 
     override fun toString(): String =
-        """
-    ${super.toString()}
+        super.toString() + "\n" +
+                """
     Food Type               : $foodType
     Category                : $vegOrNonVeg
     Ingredients             : ${ingredients.joinToString(", ")}
