@@ -1,22 +1,6 @@
 package repository
 
-import model.*
-
-object AdminRepository : BaseRepository<Admin>() {
-    override fun getId(entity: Admin) = entity.adminId
-}
-
-object FoodRepository : BaseRepository<Food>() {
-    override fun getId(entity: Food) = entity.productId
-}
-
-object PurchaseRepository : BaseRepository<Purchase>() {
-    override fun getId(entity: Purchase) = entity.purchaseId
-}
-
-object VendingMachineRepository : BaseRepository<VendingMachine>() {
-    override fun getId(entity: VendingMachine) = entity.vendingMachineId
-}
+import model.Slot
 
 object SlotRepository : BaseRepository<Slot>() {
 
