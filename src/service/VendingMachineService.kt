@@ -61,7 +61,7 @@ object VendingMachineService {
             .map { (foodId, _) ->
                 try {
                     FoodRepository.findById(foodId)
-                } catch (e: Exception) {
+                } catch (_: VendingMachineException) {
                     throw VendingMachineException("Vending machine data has been corrupted. $vendingMachineId contains unregistered food item, ID : $foodId ")
                 }
             }
