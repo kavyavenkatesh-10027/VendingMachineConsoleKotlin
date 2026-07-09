@@ -28,7 +28,7 @@ object CurrencyService {
 
         val change = EnumMap<IndianCurrency, Int>(IndianCurrency::class.java)//enum requires a java class
         var remaining = changeAmount
-        val denominations = IndianCurrency.entries.toTypedArray()
+        val denominations = IndianCurrency.entries
 
         for (i in denominations.indices.reversed()) {  // loop backwards
             if (remaining == BigDecimal.ZERO) break
