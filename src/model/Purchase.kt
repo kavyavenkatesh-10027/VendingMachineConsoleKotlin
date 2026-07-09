@@ -19,10 +19,10 @@ data class Purchase(
     }
 
     init {
-        if (quantityOfProductsPurchased.isEmpty()) throw VendingMachineException("Purchase cannot be made with an empty cart. Apologies!")
-        if (totalAmount <= BigDecimal.ZERO) throw VendingMachineException("Price cannot be negative or zero")
-        if (moneyPaidByCustomer <= BigDecimal.ZERO) throw VendingMachineException("Cash paid cannot be negative or zero")
-        if (moneyToBeReturnedByVendingMachine < BigDecimal.ZERO) throw VendingMachineException("Change cannot be negative. Only zero or a positive value")
+        require(quantityOfProductsPurchased.isNotEmpty()) { "Purchase cannot be made with an empty cart." }
+        require(totalAmount > BigDecimal.ZERO) { "Total amount must be greater than zero." }
+        require(moneyPaidByCustomer > BigDecimal.ZERO) { "Cash paid must be greater than zero." }
+        require(moneyToBeReturnedByVendingMachine >= BigDecimal.ZERO) { "Change cannot be negative." }
     }
 
     override fun toString(): String =
