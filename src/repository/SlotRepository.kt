@@ -13,6 +13,12 @@ object SlotRepository : BaseRepository<Slot>() {
         slotsInEveryMachine.getOrPut(entity.vendingMachineId) { mutableListOf() }.add(entity)
     }
 
+    override fun removeById(id: String) {
+        val slotToRemove = findById(id)
+        slotsInEveryMachine[slotToRemove.vendingMachineId]?.remove(slotToRemove)
+        super.removeById(id)
+    }
+
     fun findByVendingMachineId(vendingMachineId: String): List<Slot> {
         return slotsInEveryMachine[vendingMachineId]?.toList() ?: emptyList()
     }
