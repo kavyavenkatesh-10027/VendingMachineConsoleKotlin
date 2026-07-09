@@ -34,7 +34,7 @@ object SlotService {
         if (!slot.getFoodItemsInSlot().containsKey(foodId)) {
             throw VendingMachineException("Food $foodId is not in slot $slotId. Use addNewFoodTypeToSlot instead.")
         }
-        slot.addMoreOfFoodItemToSlot(foodId, quantity)
+        slot.addMoreOfFoodItemToSlot(foodId, quantity)//Validation in model class
     }
 
     fun removeSlot(slotId: String) {

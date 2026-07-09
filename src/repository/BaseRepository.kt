@@ -22,7 +22,7 @@ abstract class BaseRepository<T : Any> {//Now T can be anything other than null
 
     fun findAll(): Set<T> = store.values.toSet()
 
-    fun removeById(id: String) {
+    open fun removeById(id: String) {
         if (!existsById(id)) {
             throw VendingMachineException("Entity of Id: $id does not exist")
         }
