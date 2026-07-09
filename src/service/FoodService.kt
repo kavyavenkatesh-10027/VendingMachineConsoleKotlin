@@ -38,22 +38,18 @@ object FoodService {
     fun getAllFoods(): Set<Food> = FoodRepository.findAll()
 
     fun editDescription(foodId: String, newDescription: String) {
-        require(newDescription.isNotBlank()) { "Product must have a description" }
         getFoodById(foodId).description = newDescription
     }
 
     fun editName(foodId: String, newName: String) {
-        require(newName.isNotBlank()) { "Product must have a name" }
         getFoodById(foodId).productName = newName
     }
 
     fun editBrand(foodId: String, newBrand: String) {
-        require(newBrand.isNotBlank()) { "Product must have a brand" }
         getFoodById(foodId).brand = newBrand
     }
 
     fun editPrice(foodId: String, newPrice: BigDecimal) {
-        require(newPrice > BigDecimal.ZERO) { "Price must be positive" }
         getFoodById(foodId).price = newPrice
     }
 
