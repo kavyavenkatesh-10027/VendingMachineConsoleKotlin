@@ -11,20 +11,20 @@ abstract class BaseRepository<T : Any> {//Now T can be anything other than null
     open fun add(entity: T) {
         val id = getId(entity)
         if (existsById(id)) {
-            throw VendingMachineException("Entity is either null or already exists in the system")
+            throw VendingMachineException("Entity already exists in the system")
         }
         store[id] = entity
     }
 
     fun findById(id: String): T {
-        return store[id] ?: throw VendingMachineException("Entity of Id: $id is either null or does not exist")
+        return store[id] ?: throw VendingMachineException("Entity of Id: $id does not exist")
     }
 
     fun findAll(): Set<T> = store.values.toSet()
 
     fun removeById(id: String) {
         if (!existsById(id)) {
-            throw VendingMachineException("Entity of Id: $id is either null or does not exist")
+            throw VendingMachineException("Entity of Id: $id does not exist")
         }
         store.remove(id)
     }
