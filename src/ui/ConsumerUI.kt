@@ -7,11 +7,10 @@ import util.Interactable
 import util.VendingMachineException
 import java.math.BigDecimal
 import java.util.EnumMap
-import java.util.Scanner
 import kotlin.collections.set
 import kotlin.plus
 
-class ConsumerUI(private val scanner: Scanner) : Interactable {
+class ConsumerUI() : Interactable {
 
     private val controller = ConsumerController()
 
@@ -37,9 +36,10 @@ class ConsumerUI(private val scanner: Scanner) : Interactable {
                 }
             } catch (e: VendingMachineException) {
                 println("\n  [!] ${e.message}")
+            } catch (e: IllegalArgumentException) {
+                println("[Input Error] ${e.message}")
             }
         }
-        println("\n  Goodbye!\n")
     }
 
     private fun viewAllMachines() {
@@ -146,7 +146,7 @@ class ConsumerUI(private val scanner: Scanner) : Interactable {
                 payment[coin] = (payment[coin] ?: 0) + 1
                 paid += BigDecimal.valueOf(coin.value.toLong())
                 println("  Accepted Rs.${coin.value}  |  Total inserted so far: Rs.$paid")
-            } catch (e: IllegalArgumentException) {
+            } catch (_: IllegalArgumentException) {
                 println("  [!] Unknown denomination. Try again.")
             }
         }

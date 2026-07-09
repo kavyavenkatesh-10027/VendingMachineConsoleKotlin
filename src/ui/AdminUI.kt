@@ -3,9 +3,8 @@ package ui
 import controller.AdminController
 import util.*
 import java.util.EnumMap
-import java.util.Scanner
 
-class AdminUI(private val scanner: Scanner) : Interactable {
+class AdminUI() : Interactable {
 
     private val controller = AdminController()
 
@@ -37,7 +36,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
             print("Choice: ")
 
             try {
-                when (scanner.nextLine().trim()) {
+                when (prompt("Your choice")) {
                     "1"  -> createVendingMachine()
                     "2"  -> removeVendingMachine()
                     "3"  -> addSlotToVendingMachine()
@@ -62,6 +61,8 @@ class AdminUI(private val scanner: Scanner) : Interactable {
                 }
             } catch (e: VendingMachineException) {
                 println("[Error] ${e.message}")
+            } catch (e: IllegalArgumentException) {
+                println("[Input Error] ${e.message}")
             }
         }
     }
@@ -113,8 +114,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
         val expiryDate = readDate("Expiry date (yyyy-MM-dd): ")
         val vegOrNonVeg = readEnum(VegNonVeg::class.java, "Veg / Non-veg")
 
-        print("Ingredients (comma-separated): ")
-        val ingredients = scanner.nextLine().trim().split(",")
+        val ingredients = prompt("Ingredients (comma-separated): ").trim().split(",")
 
         val foodType = readEnum(FoodType::class.java, "Food type")
 
@@ -245,7 +245,7 @@ class AdminUI(private val scanner: Scanner) : Interactable {
                 val count = input.toInt()
                 if (count > 0) denominations[denom] = count
                 else println("  Skipped — must be greater than zero.")
-            } catch (e: NumberFormatException) {
+            } catch (_: NumberFormatException) {
                 println("  Invalid input, skipping Rs.${denom.value}")
             }
         }
