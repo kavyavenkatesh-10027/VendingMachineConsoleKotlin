@@ -101,9 +101,9 @@ interface Interactable {
                     return constants[choice - 1]
                 }
             } catch (_: NumberFormatException) {
+                println("Invalid choice.")
             }
 
-            println("Invalid choice.")
         }
     }
 }

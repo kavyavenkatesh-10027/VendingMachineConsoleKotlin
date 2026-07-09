@@ -17,7 +17,7 @@ class Slot(
     }
 
     init {
-        if (vendingMachineId.isBlank()) throw VendingMachineException("Vending machine cannot be blank")
+        require(!vendingMachineId.isBlank()) {"Vending machine cannot be blank"}
         if (this.foodItemsInSlot.isEmpty()) throw VendingMachineException("Slot must have at least one food item")
     }
 

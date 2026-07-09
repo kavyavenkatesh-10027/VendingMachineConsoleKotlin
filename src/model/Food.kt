@@ -33,7 +33,7 @@ class Food(
     init {
         if (ingredients.isEmpty()) throw VendingMachineException("Ingredients must be provided")
         if (!expiryDate.isAfter(LocalDate.now())) throw VendingMachineException("Cannot register an already-expired food item.")
-        if (!expiryDate.isAfter(manufacturingDate)) throw VendingMachineException("Expiry date must be after the manufacturing date.")
+        require(expiryDate.isAfter(manufacturingDate)) {"Expiry date must be after the manufacturing date."}
     }
 
     fun addIngredient(ingredient: String) {
