@@ -45,6 +45,7 @@ class Slot(
     }
 
     fun removeFoodTypeFromSlot(foodId: String) {
+        if (!foodItemsInSlot.contains(foodId)) throw VendingMachineException("Food $foodId is not present in slot $slotId")
         foodItemsInSlot.remove(foodId)
     }
 
