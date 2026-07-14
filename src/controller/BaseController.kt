@@ -7,19 +7,19 @@ import util.*
 open class BaseController {
 
     fun viewVendingMachine(vendingMachineId: String): VendingMachine {
-        require(vendingMachineId.isNotBlank()) {"Vending machine ID cannot be null or empty."}
+        require(vendingMachineId.isNotBlank()) {"Vending machine ID cannot be empty."}
         return VendingMachineService.getVendingMachineById(vendingMachineId)
     }
 
     fun viewAllVendingMachines(): Set<VendingMachine> = VendingMachineService.getAllVendingMachines()
 
     fun viewAvailableProducts(vendingMachineId: String): Set<Food> {
-        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be null or empty." }
+        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be empty." }
         return VendingMachineService.viewAvailableProducts(vendingMachineId)
     }
 
     fun viewAvailableQuantityForAllProducts(vendingMachineId: String): Map<String, Int> {
-        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be null or empty." }
+        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be empty." }
         return VendingMachineService.viewAvailableQuantityForAllProducts(vendingMachineId)
     }
 
@@ -27,8 +27,8 @@ open class BaseController {
         vendingMachineId: String,
         foodId: String
     ): Int {
-        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be null or empty." }
-        require(foodId.isNotBlank()) { "Food ID cannot be null or empty." }
+        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be empty." }
+        require(foodId.isNotBlank()) { "Food ID cannot be empty." }
 
         return VendingMachineService.getAvailableQuantityForOneProduct(
             vendingMachineId,
