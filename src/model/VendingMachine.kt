@@ -16,7 +16,7 @@ class VendingMachine(
     }
 
     init {
-        require(establishedOn > LocalDate.now()) {"Established date cannot be before the current date"}
+        require(establishedOn <= LocalDate.now()) {"Established date must be on or before the current date"}
         slotsInVendingMachine.forEach { slot ->
             if (slot.vendingMachineId != vendingMachineId) {
                 throw VendingMachineException("Slot ${slot.slotId} belongs to a different vending machine")

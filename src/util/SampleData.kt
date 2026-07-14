@@ -24,7 +24,7 @@ fun load() {
     // AFTER today's date, so we use a near-future date here.
     val machine = VendingMachine(
             vendingMachineLocation = Location.OMR,
-            establishedOn = LocalDate.now().plusDays(1)
+            establishedOn = LocalDate.now()
     )
     machine.drawer.add(IndianCurrency.FIVE_HUNDRED, 10)
     machine.drawer.add(IndianCurrency.HUNDRED, 20)

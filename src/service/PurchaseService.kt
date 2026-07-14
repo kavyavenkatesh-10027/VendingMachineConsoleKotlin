@@ -14,8 +14,6 @@ object PurchaseService {
         cart: Map<String, Int>,
         inserted: Map<IndianCurrency, Int>
     ): Purchase {
-        val amountPaid = CurrencyService.acceptPayment(vm.drawer, inserted)
-
         // Validate cart items and stock
         for ((foodId, requestedQty) in cart) {
             require(foodId.isNotBlank()) { "Food ID in cart cannot be empty."}
@@ -23,12 +21,12 @@ object PurchaseService {
             val food = FoodRepository.findById(foodId)
             val stock = getStockInMachine(vm, foodId)
             if (stock < requestedQty) {
-                CurrencyService.refund(vm.drawer, inserted)
                 throw PurchaseHandlingException("Insufficient stock for '${food.productName}'. Available: $stock")
             }
         }
 
         val total = calculateTotal(cart)
+        val amountPaid = CurrencyService.acceptPayment(vm.drawer, inserted)
 
         if (amountPaid < total) {
             CurrencyService.refund(vm.drawer, inserted)

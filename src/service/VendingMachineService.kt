@@ -19,7 +19,7 @@ object VendingMachineService {
         establishedOn: LocalDate,
         firstSlotFoodItems: Map<String, Int>
     ): VendingMachine {
-        require(establishedOn > LocalDate.now()) {"Established date cannot be before the current date"}
+        require(establishedOn <= LocalDate.now()) {"Established date must be on or before the current date"}
 
         val vm = VendingMachine(location, establishedOn)
         VendingMachineRepository.add(vm)
@@ -101,7 +101,7 @@ object VendingMachineService {
         require(!foodItems.isEmpty()){"A slot must contain at least one food item."}
         for ((foodId, qty) in foodItems) {
             require(foodId.isNotBlank()) {"Food ID in slot cannot be empty."}
-            require(qty <= 0) { "Quantity for food '$foodId' must be greater than zero."}
+            require(qty > 0) { "Quantity for food '$foodId' must be greater than zero."}
             if (!FoodRepository.existsById(foodId)) throw VMHandlingException("No food of ID: $foodId has been registered")
         }
     }

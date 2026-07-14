@@ -8,6 +8,7 @@ fun main() {
 
     val consumerCaller = ConsumerUI()
 
+    SampleData.load()
 
     var running = true
 
