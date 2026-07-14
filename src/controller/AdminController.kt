@@ -28,7 +28,7 @@ class AdminController : BaseController() {
     }
 
     fun addSlotToVendingMachine(vendingMachineId: String, foodItems: Map<String, Int>): Slot {
-        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be null or empty." }
+        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be empty." }
         require(foodItems.isNotEmpty()) { "Slot must have at least one food item." }
         return VendingMachineService.addSlotToVendingMachine(vendingMachineId, foodItems)
     }
@@ -46,9 +46,9 @@ class AdminController : BaseController() {
         expiryDate: LocalDate,
         foodType: FoodType
     ): Food {
-        require(productName.isNotBlank()) { "Food name cannot be null or empty." }
-        require(brand.isNotBlank()) { "Brand cannot be null or empty." }
-        require(description.isNotBlank()) { "Description cannot be null or empty." }
+        require(productName.isNotBlank()) { "Food name cannot be nempty." }
+        require(brand.isNotBlank()) { "Brand cannot be empty." }
+        require(description.isNotBlank()) { "Description cannot be empty." }
         require(price > BigDecimal.ZERO) { "Price cannot be zero or negative." }
         require(manufacturingDate <= LocalDate.now()) { "Manufacturing date cannot be in the future." }
         require(ingredients.isNotEmpty()) { "At least one ingredient must be provided." }
@@ -69,70 +69,70 @@ class AdminController : BaseController() {
     }
 
     fun addNewFoodTypeToSlot(slotId: String, foodId: String, quantity: Int) {
-        require(slotId.isNotBlank()) { "Slot ID cannot be null or empty." }
-        require(foodId.isNotBlank()) { "Food ID cannot be null or empty." }
+        require(slotId.isNotBlank()) { "Slot ID cannot be empty." }
+        require(foodId.isNotBlank()) { "Food ID cannot be empty." }
         require(quantity > 0) { "Quantity must be greater than zero." }
 
         SlotService.addNewFoodTypeToSlot(slotId, foodId, quantity)
     }
 
     fun refillFoodInSlot(slotId: String, foodId: String, quantity: Int) {
-        require(slotId.isNotBlank()) { "Slot ID cannot be null or empty." }
-        require(foodId.isNotBlank()) { "Food ID cannot be null or empty." }
+        require(slotId.isNotBlank()) { "Slot ID cannot be empty." }
+        require(foodId.isNotBlank()) { "Food ID cannot be empty." }
         require(quantity > 0) { "Quantity must be greater than zero." }
 
         SlotService.refillFoodInSlot(slotId, foodId, quantity)
     }
 
     fun editFoodDescription(foodId: String, newDescription: String) {
-        require(foodId.isNotBlank()) { "Food ID cannot be null or empty." }
-        require(newDescription.isNotBlank()) { "New description cannot be null or empty." }
+        require(foodId.isNotBlank()) { "Food ID cannot be empty." }
+        require(newDescription.isNotBlank()) { "New description cannot be empty." }
 
         FoodService.editDescription(foodId, newDescription)
     }
 
     fun editFoodName(foodId: String, newName: String) {
-        require(foodId.isNotBlank()) { "Food ID cannot be null or empty." }
-        require(newName.isNotBlank()) { "New name cannot be null or empty." }
+        require(foodId.isNotBlank()) { "Food ID cannot be empty." }
+        require(newName.isNotBlank()) { "New name cannot be empty." }
 
         FoodService.editName(foodId, newName)
     }
 
     fun editFoodPrice(foodId: String, newPrice: BigDecimal) {
-        require(foodId.isNotBlank()) { "Food ID cannot be null or empty." }
+        require(foodId.isNotBlank()) { "Food ID cannot be empty." }
         require(newPrice > BigDecimal.ZERO) { "Price cannot be zero or negative." }
 
         FoodService.editPrice(foodId, newPrice)
     }
 
     fun editFoodBrand(foodId: String, newBrand: String) {
-        require(foodId.isNotBlank()) { "Food ID cannot be null or empty." }
-        require(newBrand.isNotBlank()) { "New brand cannot be null or empty." }
+        require(foodId.isNotBlank()) { "Food ID cannot be empty." }
+        require(newBrand.isNotBlank()) { "New brand cannot be empty." }
 
         FoodService.editBrand(foodId, newBrand)
     }
 
     fun editFoodWarning(foodId: String, newWarning: String?) {
-        require(foodId.isNotBlank()) { "Food ID cannot be null or empty." }
+        require(foodId.isNotBlank()) { "Food ID cannot be empty." }
         // Warning can be blank
 
         FoodService.editWarning(foodId, newWarning)
     }
 
     fun removeVendingMachine(vendingMachineId: String) {
-        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be null or empty." }
+        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be empty." }
 
         VendingMachineService.removeVendingMachine(vendingMachineId)
     }
 
     fun removeSlot(slotId: String) {
-        require(slotId.isNotBlank()) { "Slot ID cannot be null or empty." }
+        require(slotId.isNotBlank()) { "Slot ID cannot be empty." }
 
         SlotService.removeSlot(slotId)
     }
 
     fun removeFood(foodId: String) {
-        require(foodId.isNotBlank()) { "Food ID cannot be null or empty." }
+        require(foodId.isNotBlank()) { "Food ID cannot be empty." }
 
         FoodService.removeFood(foodId)
     }
@@ -140,7 +140,7 @@ class AdminController : BaseController() {
     fun getAllFoods(): Set<Food> = FoodService.getAllFoods()
 
     fun getFoodById(foodId: String): Food {
-        require(foodId.isNotBlank()) { "Product ID cannot be null or empty." }
+        require(foodId.isNotBlank()) { "Product ID cannot be empty." }
 
         return FoodService.getFoodById(foodId)
     }
@@ -149,7 +149,7 @@ class AdminController : BaseController() {
         viewAvailableQuantityForAllProducts(vendingMachineId)
 
     fun addCashToDrawer(vendingMachineId: String, denominations: Map<IndianCurrency, Int>) {
-        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be null or empty." }
+        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be empty." }
         require(denominations.isNotEmpty()) { "Denomination map cannot be empty." }
 
         val vm = VendingMachineService.getVendingMachineById(vendingMachineId)
@@ -160,7 +160,7 @@ class AdminController : BaseController() {
     }
 
     fun getDenominationBreakdown(vendingMachineId: String): Map<IndianCurrency, Int> {
-        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be null or empty." }
+        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be empty." }
 
         return VendingMachineService.getVendingMachineById(vendingMachineId)
             .drawer
@@ -168,7 +168,7 @@ class AdminController : BaseController() {
     }
 
     fun getTotalCashInMachine(vendingMachineId: String): BigDecimal {
-        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be null or empty." }
+        require(vendingMachineId.isNotBlank()) { "Vending machine ID cannot be empty." }
 
         return VendingMachineService.getVendingMachineById(vendingMachineId)
             .drawer
