@@ -27,7 +27,7 @@ class ConsumerUI() : Interactable {
             println("=====================================")
 
             try {
-                when (prompt("Your choice")) {
+                when (prompt("Please enter your choice")) {
                     "1"  -> viewAllMachines()
                     "2"  -> viewProducts()
                     "3"  -> buyProducts()

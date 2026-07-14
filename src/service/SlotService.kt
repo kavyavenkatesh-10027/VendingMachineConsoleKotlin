@@ -4,7 +4,7 @@ import model.Slot
 import repository.FoodRepository
 import repository.SlotRepository
 import repository.VendingMachineRepository
-import util.VendingMachineException
+import util.*
 
 object SlotService {
 
@@ -13,10 +13,10 @@ object SlotService {
     fun addNewFoodTypeToSlot(slotId: String, foodId: String, quantity: Int) {
         val slot = getSlotById(slotId)
         if (!FoodRepository.existsById(foodId)) {
-            throw VendingMachineException("Food with ID $foodId does not exist. Register the food first.")
+            throw SlotHandlingException("Food with ID $foodId does not exist. Register the food first.")
         }
         if (slot.getFoodItemsInSlot().containsKey(foodId)) {
-            throw VendingMachineException("Food $foodId is already in slot $slotId. Use refillFoodInSlot instead.")
+            throw SlotHandlingException("Food $foodId is already in slot $slotId. Use refillFoodInSlot instead.")
         }
         slot.addNewFoodTypeToSlot(foodId, quantity)
     }
@@ -32,7 +32,7 @@ object SlotService {
     fun refillFoodInSlot(slotId: String, foodId: String, quantity: Int) {
         val slot = getSlotById(slotId)
         if (!slot.getFoodItemsInSlot().containsKey(foodId)) {
-            throw VendingMachineException("Food $foodId is not in slot $slotId. Use addNewFoodTypeToSlot instead.")
+            throw SlotHandlingException("Food $foodId is not in slot $slotId. Use addNewFoodTypeToSlot instead.")
         }
         slot.addMoreOfFoodItemToSlot(foodId, quantity)//Validation in model class
     }

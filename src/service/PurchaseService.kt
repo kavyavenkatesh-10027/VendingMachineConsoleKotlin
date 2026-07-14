@@ -4,8 +4,7 @@ import model.Purchase
 import model.VendingMachine
 import repository.FoodRepository
 import repository.PurchaseRepository
-import util.IndianCurrency
-import util.VendingMachineException
+import util.*
 import java.math.BigDecimal
 
 object PurchaseService {
@@ -17,12 +16,12 @@ object PurchaseService {
     ): Purchase {
         // Validate cart items and stock
         for ((foodId, requestedQty) in cart) {
-            if (foodId.isBlank()) throw VendingMachineException("Food ID in cart cannot be null or empty.")
-            if (requestedQty <= 0) throw VendingMachineException("Quantity for food $foodId must be greater than zero.")
+            require(foodId.isNotBlank()) { "Food ID in cart cannot be empty."}
+            require(requestedQty > 0) {"Quantity for food $foodId must be greater than zero."}
             val food = FoodRepository.findById(foodId)
             val stock = getStockInMachine(vm, foodId)
             if (stock < requestedQty) {
-                throw VendingMachineException("Insufficient stock for '${food.productName}'. Available: $stock")
+                throw PurchaseHandlingException("Insufficient stock for '${food.productName}'. Available: $stock")
             }
         }
 
@@ -31,7 +30,7 @@ object PurchaseService {
 
         if (amountPaid < total) {
             CurrencyService.refund(vm.drawer, inserted)
-            throw VendingMachineException(
+            throw PurchaseHandlingException(
                 "Insufficient payment. Total: Rs.$total, Paid: Rs.$amountPaid\nCollect refund from the inserting plate"
             )
         }
@@ -39,7 +38,7 @@ object PurchaseService {
         val changeAmount = amountPaid - total
         try {
             CurrencyService.makeChange(vm.drawer, changeAmount)
-        } catch (e: VendingMachineException) {
+        } catch (e: PurchaseHandlingException) {
             CurrencyService.refund(vm.drawer, inserted)
             throw e
         }

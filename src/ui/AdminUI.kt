@@ -33,10 +33,9 @@ class AdminUI() : Interactable {
             println("19. View purchase history")
             println("0.  Exit")
             println("=================================")
-            print("Choice: ")
 
             try {
-                when (prompt("Your choice")) {
+                when (prompt("Please enter your choice :")) {
                     "1"  -> createVendingMachine()
                     "2"  -> removeVendingMachine()
                     "3"  -> addSlotToVendingMachine()
@@ -79,6 +78,7 @@ class AdminUI() : Interactable {
 
     private fun removeVendingMachine() {
         println("\n--- Remove Vending Machine ---")
+
         val vmId = prompt("Vending machine ID to remove: ")
         controller.removeVendingMachine(vmId)
         println("Vending machine $vmId and all its slots have been removed.")
