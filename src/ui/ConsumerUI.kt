@@ -20,17 +20,13 @@ class ConsumerUI() : Interactable {
             println("\n=====================================")
             println("  CUSTOMER MENU")
             println("=====================================")
-            println("  1. View all vending machines")
-            println("  2. Browse products at a machine")
-            println("  3. Buy products")
+            println("  1. Buy products")
             println("  0. Exit")
             println("=====================================")
 
             try {
                 when (prompt("Please enter your choice")) {
-                    "1"  -> viewAllMachines()
-                    "2"  -> viewProducts()
-                    "3"  -> buyProducts()
+                    "1"  -> buyProducts()
                     "0"  -> running = false
                     else -> println("  Invalid choice, please enter a choice from 0–3.")
                 }
@@ -57,11 +53,6 @@ class ConsumerUI() : Interactable {
         }
     }
 
-    private fun viewProducts() {
-        val vmId = prompt("Vending machine ID")
-        printAvailableProducts(vmId)
-    }
-
     private fun printAvailableProducts(vmId: String) {
         val products = controller.viewAvailableProducts(vmId)
         println("\n=====================================")
@@ -79,6 +70,7 @@ class ConsumerUI() : Interactable {
     }
 
     private fun buyProducts() {
+        viewAllMachines()
         val vmId = prompt("Vending machine ID")
         val products = controller.viewAvailableProducts(vmId)
         if (products.isEmpty()) { println("\n  No products in stock at this machine."); return }

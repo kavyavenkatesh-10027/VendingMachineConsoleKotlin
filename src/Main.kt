@@ -29,7 +29,7 @@ fun main() {
         println(
             """
         (1) Enter as an Admin
-        (2) Buy a product
+        (2) Enter as a Customer
         (0) Exit
         
     """.trimIndent()
