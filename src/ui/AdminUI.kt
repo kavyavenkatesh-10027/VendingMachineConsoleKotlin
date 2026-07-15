@@ -329,7 +329,7 @@ class AdminUI() : Interactable {
             
         """.trimIndent())
         allSlots.forEach {
-            println("${it.slotId} | ${it.vendingMachineId} | ${it}")
+            println("${it.slotId} | ${it.vendingMachineId} ")
         }
         println()
     }
