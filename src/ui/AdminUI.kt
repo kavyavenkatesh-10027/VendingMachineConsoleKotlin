@@ -1,6 +1,8 @@
 package ui
 
 import controller.AdminController
+import model.Food
+import model.VendingMachine
 import util.*
 import java.util.EnumMap
 
@@ -70,6 +72,7 @@ class AdminUI() : Interactable {
         println("\n--- Create Vending Machine ---")
         val location = readEnum(Location::class.java, "Location")
         val establishedOn = readDate("Established on (yyyy-MM-dd): ")
+        displayFoodMenu()
         val firstSlotFoodItems = readFoodItemsMap("first slot")
         val vm = controller.createVendingMachine(location, establishedOn, firstSlotFoodItems)
         println("\nVending machine created successfully!")
@@ -78,7 +81,7 @@ class AdminUI() : Interactable {
 
     private fun removeVendingMachine() {
         println("\n--- Remove Vending Machine ---")
-
+        displayVendingMachineMenu()
         val vmId = prompt("Vending machine ID to remove: ")
         controller.removeVendingMachine(vmId)
         println("Vending machine $vmId and all its slots have been removed.")
@@ -86,7 +89,9 @@ class AdminUI() : Interactable {
 
     private fun addSlotToVendingMachine() {
         println("\n--- Add Slot to Vending Machine ---")
+        displayVendingMachineMenu()
         val vendingMachineId = prompt("Vending machine ID: ")
+        displayFoodMenu()
         val foodItems = readFoodItemsMap("new slot")
         val slot = controller.addSlotToVendingMachine(vendingMachineId, foodItems)
         println("\nSlot added successfully!")
@@ -129,6 +134,7 @@ class AdminUI() : Interactable {
 
     private fun removeFood() {
         println("\n--- Remove Food Item ---")
+        displayFoodMenu()
         val foodId = prompt("Food ID to remove: ")
         controller.removeFood(foodId)
         println("Food $foodId removed from registry and from all slots.")
@@ -137,6 +143,7 @@ class AdminUI() : Interactable {
     private fun addNewFoodTypeToSlot() {
         println("\n--- Add New Food Type to Slot ---")
         val slotId = prompt("Slot ID: ")
+        displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val quantity = readInt("Quantity")
         controller.addNewFoodTypeToSlot(slotId, foodId, quantity)
@@ -146,6 +153,7 @@ class AdminUI() : Interactable {
     private fun refillFoodInSlot() {
         println("\n--- Refill Food in Slot ---")
         val slotId = prompt("Slot ID: ")
+        displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val quantity = readInt("Quantity to add")
         controller.refillFoodInSlot(slotId, foodId, quantity)
@@ -154,6 +162,7 @@ class AdminUI() : Interactable {
 
     private fun editFoodDescription() {
         println("\n--- Edit Food Description ---")
+        displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val newDescription = prompt("New description: ")
         controller.editFoodDescription(foodId, newDescription)
@@ -162,6 +171,7 @@ class AdminUI() : Interactable {
 
     private fun editFoodName() {
         println("\n--- Edit Food Name ---")
+        displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val newName = prompt("New name: ")
         controller.editFoodName(foodId, newName)
@@ -170,6 +180,7 @@ class AdminUI() : Interactable {
 
     private fun editFoodPrice() {
         println("\n--- Edit Food Price ---")
+        displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val newPrice = readBigDecimal("New price: ")
         controller.editFoodPrice(foodId, newPrice)
@@ -178,6 +189,7 @@ class AdminUI() : Interactable {
 
     private fun editFoodBrand() {
         println("\n--- Edit Food Brand ---")
+        displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val newBrand = prompt("New brand: ")
         controller.editFoodBrand(foodId, newBrand)
@@ -186,6 +198,7 @@ class AdminUI() : Interactable {
 
     private fun editFoodWarning() {
         println("\n--- Edit Food Warning ---")
+        displayFoodMenu()
         val foodId = prompt("Food ID: ")
         var newWarning: String? = prompt("New warning (press Enter to clear): ")
         if (newWarning!!.isEmpty()) newWarning = null
@@ -209,6 +222,7 @@ class AdminUI() : Interactable {
 
     private fun viewProductCount() {
         println("\n--- Product Count at Machine ---")
+        displayVendingMachineMenu()
         val vmId = prompt("Vending machine ID: ")
         val stockMap = controller.getProductCountForMachine(vmId)
         if (stockMap.isEmpty()) { println("No products currently stocked."); return }
@@ -224,6 +238,7 @@ class AdminUI() : Interactable {
 
     private fun viewCashDrawer() {
         println("\n--- View Cash Drawer ---")
+        displayVendingMachineMenu()
         val vmId = prompt("Vending machine ID: ")
         println("\n===== Cash Drawer — $vmId =====")
         controller.getDenominationBreakdown(vmId).forEach { (denom, count) ->
@@ -234,6 +249,7 @@ class AdminUI() : Interactable {
 
     private fun addCashToDrawer() {
         println("\n--- Add Cash to Drawer ---")
+        displayVendingMachineMenu()
         val vmId = prompt("Vending machine ID: ")
         val denominations = EnumMap<IndianCurrency, Int>(IndianCurrency::class.java)
 
@@ -273,6 +289,32 @@ class AdminUI() : Interactable {
             println("  Change : Rs.${p.moneyToBeReturnedByVendingMachine}")
             println("  ────────────────────────────")
         }
+    }
+
+    private fun displayVendingMachineMenu(){
+        val allVendingMachine: Set<VendingMachine> = controller.viewAllVendingMachines()
+        println("""
+            
+            -----Vending Machine Menu-----
+            
+        """.trimIndent())
+        allVendingMachine.forEach {
+            println("${it.vendingMachineId} | ${it.establishedOn} ")
+        }
+        println()
+    }
+
+    private fun displayFoodMenu(){
+        val allFoods: Set<Food> = controller.getAllFoods()
+        println("""
+            
+            -----Food Menu-----
+            
+        """.trimIndent())
+        allFoods.forEach {
+            println("${it.productId} | ${it.productName} | ${it.brand} | ${it.price}")
+        }
+        println()
     }
 }
 

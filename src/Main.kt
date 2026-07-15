@@ -10,6 +10,12 @@ fun main() {
 
     SampleData.load()
 
+    fun validateAdmin(): Boolean{
+        println("Enter the passcode")
+        val codeInput: String = readln()
+        return codeInput == "Aloha"
+    }
+
     var running = true
 
     println("""
@@ -31,11 +37,20 @@ fun main() {
 
         val option = readln().trim()
         when(option){
-            "1" -> adminCaller.show()
+            "1" -> {
+                if (validateAdmin()){
+                    adminCaller.show()
+                }else{
+                    println("Invalid passcode, try again!")
+                    continue
+                }
+            }
             "2" -> consumerCaller.show()
             "0" -> {running = false}
             else -> println("Invalid choice")
         }
     }
+
+
 
 }
