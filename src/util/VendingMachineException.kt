@@ -13,13 +13,13 @@ class SlotHandlingException(message: String)  : VendingMachineException(message)
 class VMHandlingException(message: String)  : VendingMachineException(message)
 //Service wise
 
-class EntityDoesNotExistException(message: String) : VendingMachineException(message)
-
-class InsufficientStockException(message: String) : VendingMachineException(message)
-
-class InsufficientCashInputException(message: String) : VendingMachineException(message)
-
-class InsufficientDenominationTypesException(message: String) : VendingMachineException(message)
+//class EntityDoesNotExistException(message: String) : VendingMachineException(message)
+//
+//class InsufficientStockException(message: String) : VendingMachineException(message)
+//
+//class InsufficientCashInputException(message: String) : VendingMachineException(message)
+//
+//class InsufficientDenominationTypesException(message: String) : VendingMachineException(message)
 
 //Utility wise
 //Exceptions
