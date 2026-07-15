@@ -3,24 +3,19 @@ package util
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
-import java.util.Scanner
 
 interface Interactable {
 
-    companion object {
-        val scanner = Scanner(System.`in`)
-    }
-
     fun prompt(label: String): String {
         print(label)
-        return scanner.nextLine().trim()
+        return readln().trim()
     }
 
     fun readInt(prompt: String): Int {
         while (true) {
             print("$prompt : ")
             try {
-                val value = scanner.nextLine().trim().toInt()
+                val value = readln().trim().toInt()
                 if (value > 0) {
                     return value
                 }
@@ -38,7 +33,7 @@ interface Interactable {
 
         while (true) {
             print("  Food ID: ")
-            val foodId = scanner.nextLine().trim()
+            val foodId = readln().trim()
 
             if (foodId.isEmpty()) {
                 if (foodItems.isEmpty()) {
@@ -59,7 +54,7 @@ interface Interactable {
         while (true) {
             print(prompt)
             try {
-                return LocalDate.parse(scanner.nextLine().trim())
+                return LocalDate.parse(readln().trim())
             } catch (_: DateTimeParseException) {
                 println("Invalid date. Please use the format yyyy-MM-dd.")
             }
@@ -70,7 +65,7 @@ interface Interactable {
         while (true) {
             print(prompt)
             try {
-                val value = BigDecimal(scanner.nextLine().trim())
+                val value = BigDecimal(readln().trim())
 
                 if (value <= BigDecimal.ZERO) {
                     println("Please enter a number greater than zero.")
@@ -96,7 +91,7 @@ interface Interactable {
             print("Choose (1-${constants.size}): ")
 
             try {
-                val choice = scanner.nextLine().trim().toInt()
+                val choice = readln().trim().toInt()
                 if (choice in 1..constants.size) {
                     return constants[choice - 1]
                 }

@@ -2,6 +2,7 @@ package ui
 
 import controller.AdminController
 import model.Food
+import model.Slot
 import model.VendingMachine
 import util.*
 import java.util.EnumMap
@@ -100,6 +101,7 @@ class AdminUI() : Interactable {
 
     private fun removeSlot() {
         println("\n--- Remove Slot ---")
+        displaySlotMenu()
         val slotId = prompt("Slot ID to remove: ")
         controller.removeSlot(slotId)
         println("Slot $slotId removed.")
@@ -142,6 +144,7 @@ class AdminUI() : Interactable {
 
     private fun addNewFoodTypeToSlot() {
         println("\n--- Add New Food Type to Slot ---")
+        displaySlotMenu()
         val slotId = prompt("Slot ID: ")
         displayFoodMenu()
         val foodId = prompt("Food ID: ")
@@ -152,6 +155,7 @@ class AdminUI() : Interactable {
 
     private fun refillFoodInSlot() {
         println("\n--- Refill Food in Slot ---")
+        displaySlotMenu()
         val slotId = prompt("Slot ID: ")
         displayFoodMenu()
         val foodId = prompt("Food ID: ")
@@ -313,6 +317,19 @@ class AdminUI() : Interactable {
         """.trimIndent())
         allFoods.forEach {
             println("${it.productId} | ${it.productName} | ${it.brand} | ${it.price}")
+        }
+        println()
+    }
+
+    private fun displaySlotMenu(){
+        val allSlots: Set<Slot> = controller.getAllSlots()
+        println("""
+            
+            -----Slot Menu-----
+            
+        """.trimIndent())
+        allSlots.forEach {
+            println("${it.slotId} | ${it.vendingMachineId} | ${it}")
         }
         println()
     }

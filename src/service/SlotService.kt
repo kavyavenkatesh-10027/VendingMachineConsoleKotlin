@@ -10,6 +10,8 @@ object SlotService {
 
     fun getSlotById(slotId: String): Slot = SlotRepository.findById(slotId)
 
+    fun getAllSlots() : Set<Slot> = SlotRepository.findAll()
+
     fun addNewFoodTypeToSlot(slotId: String, foodId: String, quantity: Int) {
         val slot = getSlotById(slotId)
         if (!FoodRepository.existsById(foodId)) {

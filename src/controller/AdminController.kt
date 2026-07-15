@@ -125,6 +125,8 @@ class AdminController : BaseController() {
         VendingMachineService.removeVendingMachine(vendingMachineId)
     }
 
+    fun getAllSlots(): Set<Slot> = SlotService.getAllSlots()
+
     fun removeSlot(slotId: String) {
         require(slotId.isNotBlank()) { "Slot ID cannot be empty." }
 
