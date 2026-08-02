@@ -1,26 +1,23 @@
 package util
 
-//The purpose of VendingMachineException is to clearly communicate the cause for the breakdown is , and it does this by inheriting Runtime.//todo working on it
+//The purpose of VendingMachineException is to clearly communicate the cause for the breakdown is , and it does this by inheriting Runtime.//done
+//Why? To have a common type for all the exception for better readability and handling
 open class VendingMachineException(message: String) : RuntimeException(message)
 
-class CurrencyHandlingException(message: String)  : VendingMachineException(message)
 
-class PurchaseHandlingException(message: String)  : VendingMachineException(message)
+class SupplyDemandException(message: String)  : VendingMachineException(message)
 
-class FoodHandlingException(message: String)  : VendingMachineException(message)
+class InsufficientPaymentException(message: String)  : VendingMachineException(message)
 
-class SlotHandlingException(message: String)  : VendingMachineException(message)
+class InsufficientDenominationForChangeException(message: String) : VendingMachineException(message)
 
-class VMHandlingException(message: String)  : VendingMachineException(message)
-//Service wise
+class UnknownEntityException(message: String) : VendingMachineException(message)
 
-//class EntityDoesNotExistException(message: String) : VendingMachineException(message)
-//
-//class InsufficientStockException(message: String) : VendingMachineException(message)
-//
-//class InsufficientCashInputException(message: String) : VendingMachineException(message)
-//
-//class InsufficientDenominationTypesException(message: String) : VendingMachineException(message)
+class UnregisteredEntityException(message: String)  : VendingMachineException(message)
 
-//Utility wise
-//Exceptions
+class IllegalNegativeValueException(message: String)  : VendingMachineException(message)
+
+class ExistsAlreadyException(message: String)  : VendingMachineException(message)
+
+class CorruptedDataException(message: String)  : VendingMachineException(message)
+

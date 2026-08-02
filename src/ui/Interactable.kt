@@ -1,4 +1,4 @@
-package util
+package ui
 
 import java.math.BigDecimal
 import java.time.LocalDate
@@ -7,11 +7,13 @@ import java.time.format.DateTimeParseException
 //The purpose of Interactable is to provide methods for the UI components to easily interact with the user, and it does this by using interface.
 interface Interactable {
 
+    //Why? To reduce duplication
     fun prompt(label: String): String {
         print(label)
         return readln().trim()
     }
 
+    //Why? To reduce duplication, and reduce NFE.
     fun readInt(prompt: String): Int {
         while (true) {
             print("$prompt : ")
@@ -27,6 +29,7 @@ interface Interactable {
         }
     }
 
+    //Why? To reduce duplication of code for action: validating food on input.
     fun readFoodItemsMap(context: String): MutableMap<String, Int> {
         val foodItems = mutableMapOf<String, Int>()
 
@@ -51,6 +54,7 @@ interface Interactable {
         return foodItems
     }
 
+    //Why? To reduce duplication and validate date input.
     fun readDate(prompt: String): LocalDate {
         while (true) {
             print(prompt)
@@ -62,6 +66,7 @@ interface Interactable {
         }
     }
 
+    //Why? To reduce duplication, and validate decimal input
     fun readBigDecimal(prompt: String): BigDecimal {
         while (true) {
             print(prompt)
@@ -80,6 +85,7 @@ interface Interactable {
         }
     }
 
+    //Why? To reduce duplication, and for better UserX
     fun <T : Enum<T>> readEnum(clazz: Class<T>, label: String): T {
         val constants = clazz.enumConstants
 

@@ -15,8 +15,9 @@ data class Purchase(
 
     val purchaseId: String = Generator.generatePurchaseId()
 
+    //Why? For encapsulating and restricting modification of the collection
     fun getQuantityOfProductsPurchased(): Map<String, Int> {
-        return quantityOfProductsPurchased.toMap() // Returns a read-only copy
+        return quantityOfProductsPurchased.toMap()
     }
 
     init {
@@ -24,6 +25,7 @@ data class Purchase(
         require(totalAmount > BigDecimal.ZERO) { "Total amount must be greater than zero." }
         require(moneyPaidByCustomer > BigDecimal.ZERO) { "Cash paid must be greater than zero." }
         require(moneyToBeReturnedByVendingMachine >= BigDecimal.ZERO) { "Change cannot be negative." }
+        //Runs along with primary const
     }
 
     override fun toString(): String =

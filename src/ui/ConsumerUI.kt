@@ -3,7 +3,6 @@ package ui
 import controller.ConsumerController
 import model.Purchase
 import util.IndianCurrency
-import util.Interactable
 import util.VendingMachineException
 import java.math.BigDecimal
 import java.util.EnumMap
@@ -15,6 +14,7 @@ class ConsumerUI() : Interactable {
 
     private val controller = ConsumerController()
 
+    //Why? For looping the options till exit request
     fun show() {
         var running = true
         while (running) {
@@ -39,6 +39,7 @@ class ConsumerUI() : Interactable {
         }
     }
 
+    //Why? UI and presentation, along with forward calls, along with forward calls
     private fun viewAllMachines() {
         val machines = controller.viewAllVendingMachines()
         println("\n=====================================")
@@ -54,6 +55,7 @@ class ConsumerUI() : Interactable {
         }
     }
 
+    //Why? UI and presentation, along with forward calls, along with forward calls
     private fun printAvailableProducts(vmId: String) {
         val products = controller.viewAvailableProducts(vmId)
         println("\n=====================================")
@@ -70,6 +72,7 @@ class ConsumerUI() : Interactable {
         }
     }
 
+    //Why? To have a proper flow for purchasing a product, along with UI and presentation, along with forward calls
     private fun buyProducts() {
         viewAllMachines()
         val vmId = prompt("Vending machine ID")
@@ -91,6 +94,7 @@ class ConsumerUI() : Interactable {
         printReceipt(purchase)
     }
 
+    //Why? Soft replication of a real-world cart
     private fun buildCart(vmId: String): Map<String, Int> {
         val cart = mutableMapOf<String, Int>()
         println("\n  Add items to cart (leave Food ID blank when done):")
@@ -115,6 +119,7 @@ class ConsumerUI() : Interactable {
         return cart
     }
 
+    //Why? For one at a time money exchange. Attempting to replicate the vending machine style of coin by coin entry.
     private fun collectPayment(totalRequired: BigDecimal): Map<IndianCurrency, Int> {
         val payment = EnumMap<IndianCurrency, Int>(IndianCurrency::class.java)
         var paid = BigDecimal.ZERO
@@ -147,6 +152,7 @@ class ConsumerUI() : Interactable {
         return payment
     }
 
+    //Why? UI and presentation, along with forward calls
     private fun printReceipt(purchase: Purchase) {
         println("\n=====================================")
         println("              RECEIPT")

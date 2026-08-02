@@ -15,6 +15,7 @@ import kotlin.collections.iterator
 //The purpose of VendingMachineService is to manage vending machine, and it does this by object (Singleton class in Java).
 object VendingMachineService {
 
+    //Why? For maintaining the right order in the process of creating a vending machine.
     fun createVendingMachine(
         location: Location,
         establishedOn: LocalDate,
@@ -31,6 +32,7 @@ object VendingMachineService {
         return vm
     }
 
+    //Why? For coupling data update in vending machine list as well as slot repo.
     fun addSlotToVendingMachine(vendingMachineId: String, foodItems: Map<String, Int>): Slot {
         val vm = getVendingMachineById(vendingMachineId)
         val slot = buildSlotForMachine(vendingMachineId, foodItems)
@@ -39,14 +41,17 @@ object VendingMachineService {
         return slot
     }
 
+    //Why? Internal method to verify food items, and then creating teh Slot
     private fun buildSlotForMachine(vendingMachineId: String, foodItems: Map<String, Int>): Slot {
         validateFoodItems(foodItems)
         return Slot(vendingMachineId, foodItems.toMutableMap())
     }
 
+    //Why? To avoid duplication by fetching data from repository once
     fun getVendingMachineById(vendingMachineId: String): VendingMachine =
         VendingMachineRepository.findById(vendingMachineId)
 
+    //Why? To filter out unavailable products and display unique available products.
     fun viewAvailableProducts(vendingMachineId: String): Set<Food> {
         val vendingMachine = getVendingMachineById(vendingMachineId)
 
@@ -61,12 +66,13 @@ object VendingMachineService {
                 try {
                     FoodRepository.findById(foodId)
                 } catch (_: VendingMachineException) {
-                    throw VMHandlingException("Vending machine data has been corrupted. $vendingMachineId contains unregistered food item, ID : $foodId ")
+                    throw CorruptedDataException("Vending machine data has been corrupted. $vendingMachineId contains unregistered food item, ID : $foodId ")
                 }
             }
             .toSet()
     }
 
+    //Why? For machine specific all stock-quantity review.
     fun viewAvailableQuantityForAllProducts(vendingMachineId: String): Map<String, Int> {
         val vm = getVendingMachineById(vendingMachineId)
         val result = mutableMapOf<String, Int>()
@@ -78,17 +84,19 @@ object VendingMachineService {
         return result
     }
 
+    //Why? For machine specific single product-quantity review.
     fun getAvailableQuantityForOneProduct(vendingMachineId: String, foodId: String): Int {
         if (!FoodRepository.existsById(foodId)) {
-            throw VMHandlingException("Cannot check quantity for a product that does not exist")
+            throw UnknownEntityException("Cannot check quantity for a product that does not exist")
         }
         val vm = getVendingMachineById(vendingMachineId)
         return vm.getSlotsInVendingMachine().sumOf { slot -> slot.getFoodItemsInSlot()[foodId] ?: 0 }
     }
 
+    //Why? For validating before removing. Ensuring cascading deletion of slots and food items within, then and finally removing vending machine from Repo.
     fun removeVendingMachine(vendingMachineId: String) {
         if (!VendingMachineRepository.existsById(vendingMachineId)) {
-            throw VMHandlingException("Vending machine with ID $vendingMachineId does not exist")
+            throw UnknownEntityException("Vending machine with ID $vendingMachineId does not exist")
         }
         SlotRepository.findByVendingMachineId(vendingMachineId).forEach {
             SlotRepository.removeById(it.slotId)
@@ -96,14 +104,16 @@ object VendingMachineService {
         VendingMachineRepository.removeById(vendingMachineId)
     }
 
+    //Why? For consistency and maintaining Controller->Service->Repository flow
     fun getAllVendingMachines(): Set<VendingMachine> = VendingMachineRepository.findAll()
 
+    //Why? Internal method for validating food items. Assists buildSlotForMachine()
     private fun validateFoodItems(foodItems: Map<String, Int>) {
         require(!foodItems.isEmpty()){"A slot must contain at least one food item."}
         for ((foodId, qty) in foodItems) {
             require(foodId.isNotBlank()) {"Food ID in slot cannot be empty."}
             require(qty > 0) { "Quantity for food '$foodId' must be greater than zero."}
-            if (!FoodRepository.existsById(foodId)) throw VMHandlingException("No food of ID: $foodId has been registered")
+            if (!FoodRepository.existsById(foodId)) throw UnknownEntityException("No food of ID: $foodId has been registered")
         }
     }
 }

@@ -14,22 +14,26 @@ class Drawer {
         for (denomination in IndianCurrency.entries) {
             denominations[denomination] = 0
         }
+        //Runs along with primary const
     }
 
+    //Why? To reduce duplication of checking the nos of denomination
     fun getCount(denomination: IndianCurrency): Int {
         return denominations[denomination] ?: 0
     }
 
+    //Why? To safely refill the denomination in drawer
     fun add(denomination: IndianCurrency, count: Int) {
-        if (count <= 0) throw VendingMachineException("Count must be greater than zero.")
+        require (count > 0) { "Count must be greater than zero." }
 
         denominations[denomination] = getCount(denomination) + count
     }
 
+    //Why? To reduce duplication, and ensure that the demand is not more than supply
     fun deduct(denomination: IndianCurrency, count: Int) {
         val current = getCount(denomination)
 
-        if (count <= 0) throw VendingMachineException("Entered value must be greater than zero.")
+        require( count > 0) { "Entered value must be greater than zero." }
         if (count > current) {
             throw VendingMachineException("Insufficient denomination to deduct.")
         }
@@ -37,10 +41,12 @@ class Drawer {
         denominations[denomination] = current - count
     }
 
+    //Why? For encapsulating and restricting modification to the collection. Read-only.
     fun getDenominations(): Map<IndianCurrency, Int> {
-        return denominations.toMap() // Returns a read-only copy
+        return denominations.toMap()
     }
 
+    //Why? To reduce duplication
     fun totalCash(): BigDecimal {
         var total = BigDecimal.ZERO
 

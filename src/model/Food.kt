@@ -4,7 +4,7 @@ import util.*
 import java.math.BigDecimal
 import java.time.LocalDate
 
-//The purpose of Food class is to represent the food item //todo and it should contain list of real life foods, and it does this by using class.
+//The purpose of Food class is to represent the food item //todo and it should contain list of real life foods, and it does this by using class. maybe use SEALED Class
 class Food(
     productName: String,
     brand: String,
@@ -27,21 +27,25 @@ class Food(
     warning = warning
 ) {
 
+    //Why? For encapsulating and restricting modification of the collection. Read-only
     fun getIngredients(): List<String> {
-        return ingredients.toList() // Returns a read-only copy
+        return ingredients.toList()
     }
 
     init {
-        if (ingredients.isEmpty()) throw VendingMachineException("Ingredients must be provided")
-        if (!expiryDate.isAfter(LocalDate.now())) throw VendingMachineException("Cannot register an already-expired food item.")
+        require(ingredients.isNotEmpty()) { "Ingredients must be provided"}
+        require(expiryDate.isAfter(LocalDate.now())) {"Cannot register an already-expired food item." }
         require(expiryDate.isAfter(manufacturingDate)) {"Expiry date must be after the manufacturing date."}
+        //Runs along with primary const
     }
 
+    //Why? Safe-adding
     fun addIngredient(ingredient: String) {
         if (ingredient.isBlank()) throw VendingMachineException("A product cannot have a blank ingredient")
         ingredients.add(ingredient)
     }
 
+    //Why? Safe-removing
     fun removeIngredient(ingredient: String) {
         if (ingredient !in ingredients) {
             throw VendingMachineException("Ingredient : $ingredient hasn't been listed for\n Food Id : $productId \n Food Name : $productName")

@@ -9,21 +9,25 @@ import util.*
 //The purpose of SlotService is to do Crud in slots , and it does this by object (Singleton class in Java).
 object SlotService {
 
+    //Why? To avoid duplication by fetching data from repository once
     fun getSlotById(slotId: String): Slot = SlotRepository.findById(slotId)
 
+    //Why? For consistency and maintaining Controller->Service->Repository flow
     fun getAllSlots() : Set<Slot> = SlotRepository.findAll()
 
+    //Why? To validating and to safely add a new food type to the Slot
     fun addNewFoodTypeToSlot(slotId: String, foodId: String, quantity: Int) {
         val slot = getSlotById(slotId)
         if (!FoodRepository.existsById(foodId)) {
-            throw SlotHandlingException("Food with ID $foodId does not exist. Register the food first.")
+            throw UnknownEntityException("Food with ID $foodId does not exist. Register the food first.")
         }
         if (slot.getFoodItemsInSlot().containsKey(foodId)) {
-            throw SlotHandlingException("Food $foodId is already in slot $slotId. Use refillFoodInSlot instead.")
+            throw ExistsAlreadyException("Food $foodId is already in slot $slotId. Use refillFoodInSlot instead.")
         }
         slot.addNewFoodTypeToSlot(foodId, quantity)
     }
 
+    //Why? To validate the food type before collectively removing food items
     fun removeFoodTypeFromSlot(foodId: String) {
         SlotRepository.findAll().forEach { slot ->
             if (slot.getFoodItemsInSlot().containsKey(foodId)) {
@@ -32,14 +36,16 @@ object SlotService {
         }
     }
 
+    //Why? To ensure that the food actually exists in slot
     fun refillFoodInSlot(slotId: String, foodId: String, quantity: Int) {
         val slot = getSlotById(slotId)
         if (!slot.getFoodItemsInSlot().containsKey(foodId)) {
-            throw SlotHandlingException("Food $foodId is not in slot $slotId. Use addNewFoodTypeToSlot instead.")
+            throw UnregisteredEntityException("Food $foodId is not in slot $slotId. Use addNewFoodTypeToSlot instead.")
         }
         slot.addMoreOfFoodItemToSlot(foodId, quantity)//Validation in model class
     }
 
+    //Why? To maintain the flow and ensure removal from both the repos.
     fun removeSlot(slotId: String) {
         val slot = getSlotById(slotId)
         VendingMachineRepository.findById(slot.vendingMachineId).removeSlotFromVendingMachine(slot)

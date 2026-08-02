@@ -8,6 +8,7 @@ import java.time.LocalDate
 // and it does this calling SampleData.load() at the top of main()
 object SampleData {
 
+    //Why? For instance creation
 fun load() {
     // ---------- Admin ----------
     val admin = Admin(

@@ -10,6 +10,9 @@ import java.math.BigDecimal
 //The purpose of PurchaseService is to handle purchases, and it does this by object (Singleton class in Java).
 object PurchaseService {
 
+    //Why? For preventing invalid purchases and managing stock data on a clear purchase.
+    // For handling demand-supply problem. Insufficient payment, change making, and scarcity of denomination leads to refund .
+    // Updating product stock on purchase.
     fun processPurchase(
         vm: VendingMachine,
         cart: Map<String, Int>,
@@ -22,16 +25,16 @@ object PurchaseService {
             val food = FoodRepository.findById(foodId)
             val stock = getStockInMachine(vm, foodId)
             if (stock < requestedQty) {
-                throw PurchaseHandlingException("Insufficient stock for '${food.productName}'. Available: $stock")
+                throw SupplyDemandException("Insufficient stock for '${food.productName}'. Available: $stock")
             }
         }
 
-        val total = calculateTotal(cart)
+        val total = getCartTotal(cart)
         val amountPaid = CurrencyService.acceptPayment(vm.drawer, inserted)
 
         if (amountPaid < total) {
             CurrencyService.refund(vm.drawer, inserted)
-            throw PurchaseHandlingException(
+            throw InsufficientPaymentException(
                 "Insufficient payment. Total: Rs.$total, Paid: Rs.$amountPaid\nCollect refund from the inserting plate"
             )
         }
@@ -39,7 +42,7 @@ object PurchaseService {
         val changeAmount = amountPaid - total
         try {
             CurrencyService.makeChange(vm.drawer, changeAmount)
-        } catch (e: PurchaseHandlingException) {
+        } catch (e: VendingMachineException) {
             CurrencyService.refund(vm.drawer, inserted)
             throw e
         }
@@ -51,7 +54,8 @@ object PurchaseService {
         return purchase
     }
 
-    private fun calculateTotal(cart: Map<String, Int>): BigDecimal {
+    //Why? To avoid duplication send cartTotal to the initial level (ie Controller, UI layers)
+    fun getCartTotal(cart: Map<String, Int>): BigDecimal {
         var total = BigDecimal.ZERO
 
         for ((foodId, quantity) in cart) {
@@ -62,11 +66,11 @@ object PurchaseService {
         return total
     }
 
-    fun getCartTotal(cart: Map<String, Int>): BigDecimal = calculateTotal(cart)
-
+    //Why? To get a consolidated value per product, instead of slot-wise
     fun getStockInMachine(vm: VendingMachine, foodId: String): Int =
         vm.getSlotsInVendingMachine().sumOf { it.getFoodItemsInSlot()[foodId] ?: 0 }
 
+    //Why? For collecting food items scattered across various slots
     private fun deductStockFromSlots(vm: VendingMachine, cart: Map<String, Int>) {
         for ((foodId, requestedQty) in cart) {
             var remaining = requestedQty
@@ -82,5 +86,6 @@ object PurchaseService {
         }
     }
 
+    //Why? For consistency and maintaining Controller->Service->Repository flow
     fun getAllPurchases(): Set<Purchase> = PurchaseRepository.findAll()
 }

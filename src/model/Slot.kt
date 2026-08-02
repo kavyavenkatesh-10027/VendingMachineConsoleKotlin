@@ -13,30 +13,35 @@ class Slot(
     // Defensive copy so external mutation of the caller's map can't corrupt slot state.
     private val foodItemsInSlot: MutableMap<String, Int> = foodItemsInSlot.toMutableMap()
 
+    //Why? For encapsulating and restricting modification of the collection
     fun getFoodItemsInSlot(): Map<String, Int> {
-        return foodItemsInSlot.toMap() // Returns a read-only copy
+        return foodItemsInSlot.toMap()
     }
 
     init {
         require(!vendingMachineId.isBlank()) {"Vending machine cannot be blank"}
-        if (this.foodItemsInSlot.isEmpty()) throw VendingMachineException("Slot must have at least one food item")
+        require(this.foodItemsInSlot.isNotEmpty()) {"Slot must have at least one food item"}
+        //Runs along with primary const
     }
 
+    //Why? For validating and to safely add a new food type to the Slot
     fun addNewFoodTypeToSlot(foodId: String, quantity: Int) {
-        if (foodId.isBlank()) throw VendingMachineException("Food ID must not be left blank")
-        if (quantity <= 0) throw VendingMachineException("Quantity must be greater than zero")
+        require(foodId.isNotBlank()) {"Food ID must not be left blank"}
+        require(quantity > 0) {"Quantity must be greater than zero" }
         foodItemsInSlot[foodId] = quantity
     }
 
+    //Why? To validate before refilling
     fun addMoreOfFoodItemToSlot(foodId: String, quantity: Int) {
-        if (quantity <= 0) throw VendingMachineException("Quantity must be greater than zero")
+        require(quantity > 0) {"Quantity must be greater than zero"}
         val current = foodItemsInSlot[foodId]
             ?: throw VendingMachineException("Food $foodId is not present in slot $slotId")
         foodItemsInSlot[foodId] = current + quantity
     }
 
+    //Why? To validate before removing a food item from slot
     fun removeFoodItemFromSlot(foodId: String, quantity: Int) {
-        if (quantity <= 0) throw VendingMachineException("Quantity must be greater than zero")
+        require(quantity > 0) {"Quantity must be greater than zero"}
         val current = foodItemsInSlot[foodId]
             ?: throw VendingMachineException("Food $foodId is not present in slot $slotId")
         if (quantity > current) {
@@ -45,6 +50,7 @@ class Slot(
         foodItemsInSlot[foodId] = current - quantity
     }
 
+    //Why? To validate the food type before collectively removing food items
     fun removeFoodTypeFromSlot(foodId: String) {
         if (!foodItemsInSlot.contains(foodId)) throw VendingMachineException("Food $foodId is not present in slot $slotId")
         foodItemsInSlot.remove(foodId)

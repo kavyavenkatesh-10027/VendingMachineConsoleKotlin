@@ -12,6 +12,7 @@ class VendingMachine(
     val vendingMachineId = Generator.generateVendingMachineId()
     val drawer = Drawer()
 
+    //Why? For encapsulating and restricting modification of the collection (Slot is mutable)
     fun getSlotsInVendingMachine(): List<Slot> {
         return slotsInVendingMachine.toList()
     }
@@ -23,6 +24,7 @@ class VendingMachine(
                 throw VendingMachineException("Slot ${slot.slotId} belongs to a different vending machine")
             }
         }
+        //Runs along with primary const
     }
 
     fun addSlotToVendingMachine(slot: Slot) {

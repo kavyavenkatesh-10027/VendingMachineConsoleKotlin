@@ -2,6 +2,10 @@ import ui.*
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 
+/**
+ * This program follows the flow of layer UI -> Controller -> Service -> Repository
+ **/
+
 //The purpose of main() method is to decide which UI class should be operated, and it does this by using top-level functions.
 fun main() {
 

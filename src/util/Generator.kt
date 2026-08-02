@@ -9,6 +9,9 @@ object Generator {
     private var nextProductId = 1L
     private var nextPurchaseId = 1L
 
+    /***
+    Why (following 5 methods)? To automatically generate unique id for the respective entities
+     ***/
     fun generateVendingMachineId(): String =
         "vendingMachine-${nextVendingMachineId++}"
 

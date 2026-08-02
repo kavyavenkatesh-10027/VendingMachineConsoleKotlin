@@ -12,6 +12,7 @@ class AdminUI() : Interactable {
 
     private val controller = AdminController()
 
+    //Why? For looping the options till exit request
     fun show() {
         var running = true
         while (running) {
@@ -72,6 +73,7 @@ class AdminUI() : Interactable {
         }
     }
 
+    //Why? Vending machine creation flow, UI and presentation, along with forward calls
     private fun createVendingMachine() {
         println("\n--- Create Vending Machine ---")
         val location = readEnum(Location::class.java, "Location")
@@ -83,6 +85,7 @@ class AdminUI() : Interactable {
         println(vm)
     }
 
+    //Why? UI and presentation, along with forward calls.
     private fun viewVendingMachine() {
         println("\n--- View Vending Machine ---")
         displayVendingMachineMenu()
@@ -91,6 +94,7 @@ class AdminUI() : Interactable {
         println("\n $vm")
     }
 
+    //Why? UI and presentation, along with forward calls.
     private fun removeVendingMachine() {
         println("\n--- Remove Vending Machine ---")
         displayVendingMachineMenu()
@@ -99,6 +103,7 @@ class AdminUI() : Interactable {
         println("Vending machine $vmId and all its slots have been removed.")
     }
 
+    //Why? To maintain slot, UI and presentation, along with forward calls
     private fun addSlotToVendingMachine() {
         println("\n--- Add Slot to Vending Machine ---")
         displayVendingMachineMenu()
@@ -110,6 +115,7 @@ class AdminUI() : Interactable {
         println(slot)
     }
 
+    //Why? UI and presentation, along with forward calls
     private fun removeSlot() {
         println("\n--- Remove Slot ---")
         displaySlotMenu()
@@ -118,6 +124,7 @@ class AdminUI() : Interactable {
         println("Slot $slotId removed.")
     }
 
+    //Why? Validation and forward calling along with UI
     private fun registerFood() {
         println("\n--- Register Food Item ---")
         val productName = prompt("Product name: ")
@@ -145,6 +152,7 @@ class AdminUI() : Interactable {
         println(food)
     }
 
+    //Why? UI and presentation, along with forward calls
     private fun removeFood() {
         println("\n--- Remove Food Item ---")
         displayFoodMenu()
@@ -153,6 +161,7 @@ class AdminUI() : Interactable {
         println("Food $foodId removed from registry and from all slots.")
     }
 
+    //Why? UI and presentation, along with forward calls.
     private fun addNewFoodTypeToSlot() {
         println("\n--- Add New Food Type to Slot ---")
         displaySlotMenu()
@@ -164,6 +173,7 @@ class AdminUI() : Interactable {
         println("Food added to slot successfully.")
     }
 
+    //Why? UI and presentation, along with forward calls.
     private fun refillFoodInSlot() {
         println("\n--- Refill Food in Slot ---")
         displaySlotMenu()
@@ -175,6 +185,7 @@ class AdminUI() : Interactable {
         println("Slot refilled successfully.")
     }
 
+    //Why? UI and presentation, along with forward calls.
     private fun editFoodDescription() {
         println("\n--- Edit Food Description ---")
         displayFoodMenu()
@@ -184,6 +195,7 @@ class AdminUI() : Interactable {
         println("Description updated.")
     }
 
+    //Why? UI and presentation, along with forward calls.
     private fun editFoodName() {
         println("\n--- Edit Food Name ---")
         displayFoodMenu()
@@ -193,6 +205,7 @@ class AdminUI() : Interactable {
         println("Name updated.")
     }
 
+    //Why? UI and presentation, along with forward calls.
     private fun editFoodPrice() {
         println("\n--- Edit Food Price ---")
         displayFoodMenu()
@@ -202,6 +215,7 @@ class AdminUI() : Interactable {
         println("Price updated.")
     }
 
+    //Why? UI and presentation, along with forward calls.
     private fun editFoodBrand() {
         println("\n--- Edit Food Brand ---")
         displayFoodMenu()
@@ -211,6 +225,7 @@ class AdminUI() : Interactable {
         println("Brand updated.")
     }
 
+    //Why? UI and presentation, along with forward calls.
     private fun editFoodWarning() {
         println("\n--- Edit Food Warning ---")
         displayFoodMenu()
@@ -221,6 +236,7 @@ class AdminUI() : Interactable {
         println("Warning updated.")
     }
 
+    //Why? UI and presentation.
     private fun viewAllVendingMachines() {
         val machines = controller.viewAllVendingMachines()
         if (machines.isEmpty()) { println("No vending machines registered yet."); return }
@@ -228,6 +244,7 @@ class AdminUI() : Interactable {
         machines.forEach { println("$it\n--------------------------------") }
     }
 
+    //Why? UI and presentation.
     private fun viewAllFoods() {
         val foods = controller.getAllFoods()
         if (foods.isEmpty()) { println("No food items registered yet."); return }
@@ -235,6 +252,7 @@ class AdminUI() : Interactable {
         foods.forEach { println("$it\n-------------------------") }
     }
 
+    //Why? UI and presentation.
     private fun viewProductCount() {
         println("\n--- Product Count at Machine ---")
         displayVendingMachineMenu()
@@ -251,6 +269,7 @@ class AdminUI() : Interactable {
         println("  Total units : $total")
     }
 
+    //Why? UI and presentation.
     private fun viewCashDrawer() {
         println("\n--- View Cash Drawer ---")
         displayVendingMachineMenu()
@@ -262,6 +281,7 @@ class AdminUI() : Interactable {
         println("  Total : Rs.${controller.getTotalCashInMachine(vmId)}")
     }
 
+    //Why? Easy cash refilling (UX).
     private fun addCashToDrawer() {
         println("\n--- Add Cash to Drawer ---")
         displayVendingMachineMenu()
@@ -291,6 +311,7 @@ class AdminUI() : Interactable {
         println("  Total : Rs.${controller.getTotalCashInMachine(vmId)}")
     }
 
+    //Why? UI and presentation.
     private fun viewPurchaseHistory() {
         val purchases = controller.getAllPurchases()
         if (purchases.isEmpty()) { println("No purchases recorded yet."); return }
@@ -306,6 +327,7 @@ class AdminUI() : Interactable {
         }
     }
 
+    //Why? For UX, a short menu display for all vending machine, for easy selection for the user
     private fun displayVendingMachineMenu(){
         val allVendingMachine: Set<VendingMachine> = controller.viewAllVendingMachines()
         println("""
@@ -319,6 +341,7 @@ class AdminUI() : Interactable {
         println()
     }
 
+    //Why? For UX, a short menu display for all vending machine, for easy selection for the user
     private fun displayFoodMenu(){
         val allFoods: Set<Food> = controller.getAllFoods()
         println("""
@@ -332,6 +355,7 @@ class AdminUI() : Interactable {
         println()
     }
 
+    //Why? For UX, a short menu display for all vending machine, for easy selection for the user
     private fun displaySlotMenu(){
         val allSlots: Set<Slot> = controller.getAllSlots()
         println("""

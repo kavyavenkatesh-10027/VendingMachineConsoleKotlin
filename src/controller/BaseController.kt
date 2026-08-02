@@ -6,6 +6,10 @@ import service.*
 //The purpose of BaseController is to hold the common functionalities in AdminController and ConsumerController, and it does this by abstract class.
 abstract class BaseController {
 
+    /***
+     *All the methods in this class -
+    Why? For input validation and clean flow, for the safety of not letting the UI layer access Service layer.
+     ***/
     fun viewVendingMachine(vendingMachineId: String): VendingMachine {
         require(vendingMachineId.isNotBlank()) {"Vending machine ID cannot be empty."}
         return VendingMachineService.getVendingMachineById(vendingMachineId)

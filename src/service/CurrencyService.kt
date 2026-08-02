@@ -1,8 +1,9 @@
 package service
 
 import model.Drawer
+import util.IllegalNegativeValueException
 import util.IndianCurrency
-import util.VendingMachineException
+import util.InsufficientDenominationForChangeException
 import java.math.BigDecimal
 import java.util.EnumMap
 import kotlin.collections.component1
@@ -14,17 +15,19 @@ import kotlin.plus
 //The purpose of CurrencyService is to handle drawer operations, and it does this by object (Singleton class in Java).
 object CurrencyService {
 
+    //Why? For cash management of the drawer on input
     fun acceptPayment(drawer: Drawer, inserted: Map<IndianCurrency, Int>): BigDecimal {var total = BigDecimal.ZERO
         for ((denomination, count) in inserted) {  // destructuring map entries with for ((k, v) in $%map)
-            if (count <= 0) throw VendingMachineException("Count cannot be zero or negative.")
+            require(count > 0) {"Count cannot be zero or negative." }
             drawer.add(denomination, count)
             total += BigDecimal.valueOf(denomination.value.toLong()) * BigDecimal.valueOf(count.toLong())
         }
         return total
     }
 
+    //Why? Greedy algorithm implementation.
     fun makeChange(drawer: Drawer, changeAmount: BigDecimal): Map<IndianCurrency, Int> {
-        if (changeAmount < BigDecimal.ZERO) throw VendingMachineException("Change amount cannot be negative.")
+        if (changeAmount < BigDecimal.ZERO) throw IllegalNegativeValueException("Change amount cannot be negative.")
         if (changeAmount.compareTo(BigDecimal.ZERO) == 0) return emptyMap()
 
         val change = EnumMap<IndianCurrency, Int>(IndianCurrency::class.java)//enum requires a java class
@@ -45,7 +48,7 @@ object CurrencyService {
         }
 
         if (remaining != BigDecimal.ZERO) {
-            throw VendingMachineException("Machine cannot make exact change of Rs.$changeAmount.")
+            throw InsufficientDenominationForChangeException("Machine cannot make exact change of Rs.$changeAmount.")
         }
 
         for ((denom, count) in change) {
@@ -54,6 +57,7 @@ object CurrencyService {
         return change
     }
 
+    //Why? To ensure that an invalid purchase returns entered money to customer
     fun refund(drawer: Drawer, inserted: Map<IndianCurrency, Int>) {
         if (inserted.isEmpty()) return
         for ((denom, count) in inserted) {
@@ -61,8 +65,9 @@ object CurrencyService {
         }
     }
 
+    //Why? To validate count before refilling drawer with denominations
     fun addToDrawer(drawer: Drawer, denomination: IndianCurrency, count: Int) {
-        if (count <= 0) throw VendingMachineException("Count cannot be zero or negative.")
+        require (count <= 0) {"Count cannot be zero or negative." }
         drawer.add(denomination, count)
     }
 }

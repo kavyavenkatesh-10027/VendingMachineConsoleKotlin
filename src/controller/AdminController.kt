@@ -19,6 +19,10 @@ import java.time.LocalDate
 //The purpose of AdminController is to direct requests from an admin coming from the AdminUI to the correct service class and its methods, and it does this by class.
 class AdminController : BaseController() {
 
+    /***
+     *All the methods in AdminController class -
+    Why? For input validation and clean flow, for the safety of not letting the UI layer access Service layer.
+    ***/
     fun createVendingMachine(
         location: Location,
         establishedOn: LocalDate,
