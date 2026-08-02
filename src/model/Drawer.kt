@@ -5,6 +5,7 @@ import util.VendingMachineException
 import java.math.BigDecimal
 import java.util.EnumMap
 
+//The purpose of Drawer is to behave as a drawer for individual vending machines, and it does this by class.
 class Drawer {
 
     private val denominations = EnumMap<IndianCurrency, Int>(IndianCurrency::class.java)

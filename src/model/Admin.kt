@@ -4,6 +4,7 @@ import util.Gender
 import util.Generator
 import java.time.LocalDate
 
+//The purpose of Admin is to represent admin, and it does this by child class (inherits User).
 class Admin(
     name: String,
     dob: LocalDate,

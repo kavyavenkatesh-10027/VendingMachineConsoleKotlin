@@ -4,6 +4,7 @@ import util.*
 import java.math.BigDecimal
 import java.time.LocalDate
 
+//The purpose of Food class is to represent the food item //todo and it should contain list of real life foods, and it does this by using class.
 class Food(
     productName: String,
     brand: String,

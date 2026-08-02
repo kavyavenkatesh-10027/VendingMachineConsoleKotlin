@@ -2,9 +2,9 @@ package controller
 
 import model.*
 import service.*
-import util.*
 
-open class BaseController {
+//The purpose of BaseController is to hold the common functionalities in AdminController and ConsumerController, and it does this by abstract class.
+abstract class BaseController {
 
     fun viewVendingMachine(vendingMachineId: String): VendingMachine {
         require(vendingMachineId.isNotBlank()) {"Vending machine ID cannot be empty."}

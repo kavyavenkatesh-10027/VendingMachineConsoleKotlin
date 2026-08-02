@@ -4,6 +4,8 @@ import util.*
 import java.math.BigDecimal
 import java.time.LocalDate
 
+//The purpose of Product is to represent any product, and it does this by class(open).
+//Open class because food extends it
 open class Product(
     var productName: String,
     var brand: String,

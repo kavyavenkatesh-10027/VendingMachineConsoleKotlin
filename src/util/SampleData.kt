@@ -4,10 +4,8 @@ import util.*
 import java.math.BigDecimal
 import java.time.LocalDate
 
-/**
- * Seeds the repositories with sample data so the console app has something
- * to show right after startup. Call SampleData.load() at the top of main().
- */
+//The purpose of SampleData is to seed the repositories with sample data so the console app has something to show right after startup,
+// and it does this calling SampleData.load() at the top of main()
 object SampleData {
 
 fun load() {

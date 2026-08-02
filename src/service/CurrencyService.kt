@@ -11,6 +11,7 @@ import kotlin.collections.iterator
 import kotlin.minus
 import kotlin.plus
 
+//The purpose of CurrencyService is to handle drawer operations, and it does this by object (Singleton class in Java).
 object CurrencyService {
 
     fun acceptPayment(drawer: Drawer, inserted: Map<IndianCurrency, Int>): BigDecimal {var total = BigDecimal.ZERO

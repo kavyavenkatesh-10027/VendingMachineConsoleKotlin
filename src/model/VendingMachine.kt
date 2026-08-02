@@ -3,6 +3,7 @@ package model
 import util.*
 import java.time.LocalDate
 
+//The purpose of VendingMachine is to represent a real-world vending machine and has methods to refactor itself, and it does this by using class.
 class VendingMachine(
     val vendingMachineLocation: Location,
     val establishedOn: LocalDate,

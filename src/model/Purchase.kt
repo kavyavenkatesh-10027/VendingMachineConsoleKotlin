@@ -4,6 +4,7 @@ import util.*
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
+//The purpose of Purchase is to purely hold record for all the successful purchases and needs only read and create, no editing or deletion, and it does this by using data class.
 data class Purchase(
     private val quantityOfProductsPurchased: Map<String, Int>,
     val totalAmount: BigDecimal,

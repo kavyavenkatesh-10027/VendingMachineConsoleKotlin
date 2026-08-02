@@ -1,5 +1,6 @@
 package util
 
+//The purpose of VendingMachineException is to clearly communicate the cause for the breakdown is , and it does this by inheriting Runtime.//todo unclear
 open class VendingMachineException(message: String) : RuntimeException(message)
 
 class CurrencyHandlingException(message: String)  : VendingMachineException(message)

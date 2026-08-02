@@ -3,6 +3,7 @@ package model
 import util.Generator
 import util.VendingMachineException
 
+//The purpose of Slot is to represent individual racks of a vending machine and do the necessary actions, and it does this by class.
 class Slot(
     val vendingMachineId: String,
     foodItemsInSlot: MutableMap<String, Int>

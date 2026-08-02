@@ -7,6 +7,7 @@ import model.VendingMachine
 import util.*
 import java.util.EnumMap
 
+//The purpose of AdminUI is to get input from the admin and display the fetched data and status of the system in a human friendly manner, and it does this by using class that implements the util(Interface Interactable).
 class AdminUI() : Interactable {
 
     private val controller = AdminController()
@@ -16,48 +17,50 @@ class AdminUI() : Interactable {
         while (running) {
             println("\n========== ADMIN MENU ==========")
             println("1.  Create vending machine")
-            println("2.  Remove vending machine")
-            println("3.  Add slot to vending machine")
-            println("4.  Remove slot")
-            println("5.  Register food item")
-            println("6.  Remove food item")
-            println("7.  Add food type to slot")
-            println("8.  Refill food in slot")
-            println("9.  Edit food description")
-            println("10. Edit food name")
-            println("11. Edit food price")
-            println("12. Edit food brand")
-            println("13. Edit food warning")
-            println("14. View all vending machines")
-            println("15. View all food items")
-            println("16. View product count at a machine")
-            println("17. View cash drawer")
-            println("18. Add cash to drawer")
-            println("19. View purchase history")
+            println("2.  View vending machine")
+            println("3.  Remove vending machine")
+            println("4.  Add slot to vending machine")
+            println("5.  Remove slot")
+            println("6.  Register food item")
+            println("7.  Remove food item")
+            println("8.  Add food type to slot")
+            println("9.  Refill food in slot")
+            println("10. Edit food description")
+            println("11. Edit food name")
+            println("12. Edit food price")
+            println("13. Edit food brand")
+            println("14. Edit food warning")
+            println("15. View all vending machines")
+            println("16. View all food items")
+            println("17. View product count at a machine")
+            println("18. View cash drawer")
+            println("19. Add cash to drawer")
+            println("20. View purchase history")
             println("0.  Exit")
             println("=================================")
 
             try {
-                when (prompt("Please enter your choice :")) {
+                when (prompt("Please enter your choice : ")) {
                     "1"  -> createVendingMachine()
-                    "2"  -> removeVendingMachine()
-                    "3"  -> addSlotToVendingMachine()
-                    "4"  -> removeSlot()
-                    "5"  -> registerFood()
-                    "6"  -> removeFood()
-                    "7"  -> addNewFoodTypeToSlot()
-                    "8"  -> refillFoodInSlot()
-                    "9"  -> editFoodDescription()
-                    "10" -> editFoodName()
-                    "11" -> editFoodPrice()
-                    "12" -> editFoodBrand()
-                    "13" -> editFoodWarning()
-                    "14" -> viewAllVendingMachines()
-                    "15" -> viewAllFoods()
-                    "16" -> viewProductCount()
-                    "17" -> viewCashDrawer()
-                    "18" -> addCashToDrawer()
-                    "19" -> viewPurchaseHistory()
+                    "2"  -> viewVendingMachine()
+                    "3"  -> removeVendingMachine()
+                    "4"  -> addSlotToVendingMachine()
+                    "5"  -> removeSlot()
+                    "6"  -> registerFood()
+                    "7"  -> removeFood()
+                    "8"  -> addNewFoodTypeToSlot()
+                    "9"  -> refillFoodInSlot()
+                    "10" -> editFoodDescription()
+                    "11" -> editFoodName()
+                    "12" -> editFoodPrice()
+                    "13" -> editFoodBrand()
+                    "14" -> editFoodWarning()
+                    "15" -> viewAllVendingMachines()
+                    "16" -> viewAllFoods()
+                    "17" -> viewProductCount()
+                    "18" -> viewCashDrawer()
+                    "19" -> addCashToDrawer()
+                    "20" -> viewPurchaseHistory()
                     "0"  -> running = false
                     else -> println("Invalid choice. Please try again.")
                 }
@@ -78,6 +81,14 @@ class AdminUI() : Interactable {
         val vm = controller.createVendingMachine(location, establishedOn, firstSlotFoodItems)
         println("\nVending machine created successfully!")
         println(vm)
+    }
+
+    private fun viewVendingMachine() {
+        println("\n--- View Vending Machine ---")
+        displayVendingMachineMenu()
+        val vmId = prompt("Vending machine ID to view: ")
+        val vm = controller.viewVendingMachine(vmId)
+        println("\n $vm")
     }
 
     private fun removeVendingMachine() {

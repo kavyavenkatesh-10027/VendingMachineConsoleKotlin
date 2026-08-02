@@ -12,6 +12,7 @@ import kotlin.collections.component1
 import kotlin.collections.component2
 import kotlin.collections.iterator
 
+//The purpose of VendingMachineService is to manage vending machine, and it does this by object (Singleton class in Java).
 object VendingMachineService {
 
     fun createVendingMachine(

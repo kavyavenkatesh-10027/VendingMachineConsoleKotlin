@@ -7,6 +7,7 @@ import repository.PurchaseRepository
 import util.*
 import java.math.BigDecimal
 
+//The purpose of PurchaseService is to handle purchases, and it does this by object (Singleton class in Java).
 object PurchaseService {
 
     fun processPurchase(

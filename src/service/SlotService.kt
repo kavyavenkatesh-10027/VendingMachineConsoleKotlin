@@ -6,6 +6,7 @@ import repository.SlotRepository
 import repository.VendingMachineRepository
 import util.*
 
+//The purpose of SlotService is to do Crud in slots , and it does this by object (Singleton class in Java).
 object SlotService {
 
     fun getSlotById(slotId: String): Slot = SlotRepository.findById(slotId)

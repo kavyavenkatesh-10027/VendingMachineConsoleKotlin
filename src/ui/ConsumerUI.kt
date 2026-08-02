@@ -10,6 +10,7 @@ import java.util.EnumMap
 import kotlin.collections.set
 import kotlin.plus
 
+//The purpose of AdminUI is to get input from the admin and display the fetched data and teh status of the request in a human friendly manner, and it does this by using class that implements the util(Interface Interactable).
 class ConsumerUI() : Interactable {
 
     private val controller = ConsumerController()
@@ -25,7 +26,7 @@ class ConsumerUI() : Interactable {
             println("=====================================")
 
             try {
-                when (prompt("Please enter your choice")) {
+                when (prompt("Please enter your choice ")) {
                     "1"  -> buyProducts()
                     "0"  -> running = false
                     else -> println("  Invalid choice, please enter a choice from 0–3.")

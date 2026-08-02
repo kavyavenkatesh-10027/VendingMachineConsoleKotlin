@@ -8,6 +8,7 @@ import util.VegNonVeg
 import java.math.BigDecimal
 import java.time.LocalDate
 
+//The purpose of FoodService is to do Crud for all Foods, and it does this by object (Singleton class in Java).
 object FoodService {
 
     fun registerFood(

@@ -4,6 +4,7 @@ import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 
+//The purpose of Interactable is to provide methods for the UI components to easily interact with the user, and it does this by using interface.
 interface Interactable {
 
     fun prompt(label: String): String {

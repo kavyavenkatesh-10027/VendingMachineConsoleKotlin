@@ -1,5 +1,6 @@
 package util
 
+//The purpose of IndianCurrency is to provide a fixed set of denominations, and it does this by using enum(stateless).
 enum class IndianCurrency(val value: Int) {
     ONE(1),
     TWO(2),

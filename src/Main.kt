@@ -1,7 +1,8 @@
 import ui.*
-import java.util.Scanner
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
+//The purpose of main() method is to decide which UI class should be operated, and it does this by using top-level functions.
 fun main() {
 
     val adminCaller = AdminUI()
@@ -9,12 +10,6 @@ fun main() {
     val consumerCaller = ConsumerUI()
 
     SampleData.load()
-
-    fun validateAdmin(): Boolean{
-        println("Enter the passcode")
-        val codeInput: String = readln()
-        return codeInput == "Aloha"
-    }
 
     var running = true
 
@@ -50,7 +45,11 @@ fun main() {
             else -> println("Invalid choice")
         }
     }
+}
 
-
-
+//The purpose of validAdmin() method is to have a check for the admin so not anyone can enter, and it does this by using a top-level function that assists main().
+fun validateAdmin(): Boolean{
+    println("Enter the passcode")
+    val codeInput: String = readln()
+    return codeInput == "Aloha"
 }

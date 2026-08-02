@@ -1,5 +1,6 @@
 package util
 
+//The purpose of FoodType is to provide options for selecting the category for the food product, and it does this by using enum(stateless).
 enum class FoodType {
     CHIP,
     WATER_BOTTLE,
