@@ -41,7 +41,7 @@ object VendingMachineService {
         return slot
     }
 
-    //Why? Internal method to verify food items, and then creating teh Slot
+    //Why? Internal method to verify food items, and then creating the Slot
     private fun buildSlotForMachine(vendingMachineId: String, foodItems: Map<String, Int>): Slot {
         validateFoodItems(foodItems)
         return Slot(vendingMachineId, foodItems.toMutableMap())
