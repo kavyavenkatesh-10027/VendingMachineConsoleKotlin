@@ -3,7 +3,7 @@ package controller
 import model.Purchase
 import service.PurchaseService
 import service.VendingMachineService
-import util.IndianCurrency
+import model.enum.IndianCurrency
 import java.math.BigDecimal
 
 //The purpose of ConsumerController is to direct requests from a consumer, interacting through the ConsumerUI, to the correct service and its methods , and it does this by class and inheriting abstract class BaseController.

@@ -1,7 +1,7 @@
 package model
 
-import util.Gender
-import util.Generator
+import model.enum.Gender
+import generator.IDGenerator
 import java.time.LocalDate
 
 //The purpose of Admin is to represent admin, and it does this by child class (inherits User).
@@ -11,7 +11,7 @@ class Admin(
     gender: Gender
 ) : User(name, dob, gender) {
 
-    val adminId: String = Generator.generateAdminId()
+    val adminId: String = IDGenerator.generateAdminId()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

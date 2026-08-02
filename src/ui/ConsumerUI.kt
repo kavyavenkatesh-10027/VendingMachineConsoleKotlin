@@ -2,14 +2,14 @@ package ui
 
 import controller.ConsumerController
 import model.Purchase
-import util.IndianCurrency
-import util.VendingMachineException
+import model.enum.IndianCurrency
+import exception.VendingMachineException
 import java.math.BigDecimal
 import java.util.EnumMap
 import kotlin.collections.set
 import kotlin.plus
 
-//The purpose of AdminUI is to get input from the admin and display the fetched data and teh status of the request in a human friendly manner, and it does this by using class that implements the util(Interface Interactable).
+//The purpose of AdminUI is to get input from the admin and display the fetched data and teh status of the request in a human friendly manner, and it does this by using class that implements the model.enum(Interface Interactable).
 class ConsumerUI() : Interactable {
 
     private val controller = ConsumerController()

@@ -9,10 +9,10 @@ import service.FoodService
 import service.PurchaseService
 import service.SlotService
 import service.VendingMachineService
-import util.FoodType
-import util.IndianCurrency
-import util.Location
-import util.VegNonVeg
+import model.enum.FoodType
+import model.enum.IndianCurrency
+import model.enum.Location
+import model.enum.VegNonVeg
 import java.math.BigDecimal
 import java.time.LocalDate
 

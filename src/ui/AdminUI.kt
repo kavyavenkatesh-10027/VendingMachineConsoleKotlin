@@ -1,13 +1,14 @@
 package ui
 
 import controller.AdminController
+import exception.VendingMachineException
 import model.Food
 import model.Slot
 import model.VendingMachine
-import util.*
+import model.enum.*
 import java.util.EnumMap
 
-//The purpose of AdminUI is to get input from the admin and display the fetched data and status of the system in a human friendly manner, and it does this by using class that implements the util(Interface Interactable).
+//The purpose of AdminUI is to get input from the admin and display the fetched data and status of the system in a human friendly manner, and it does this by using class that implements the model.enum(Interface Interactable).
 class AdminUI() : Interactable {
 
     private val controller = AdminController()

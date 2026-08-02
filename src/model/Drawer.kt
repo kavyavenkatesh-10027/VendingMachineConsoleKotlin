@@ -1,7 +1,7 @@
 package model
 
-import util.IndianCurrency
-import util.VendingMachineException
+import exception.SupplyDemandException
+import model.enum.IndianCurrency
 import java.math.BigDecimal
 import java.util.EnumMap
 
@@ -35,7 +35,7 @@ class Drawer {
 
         require( count > 0) { "Entered value must be greater than zero." }
         if (count > current) {
-            throw VendingMachineException("Insufficient denomination to deduct.")
+            throw SupplyDemandException("Insufficient denomination to deduct.")
         }
 
         denominations[denomination] = current - count

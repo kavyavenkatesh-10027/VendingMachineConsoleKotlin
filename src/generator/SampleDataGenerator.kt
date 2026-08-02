@@ -1,12 +1,12 @@
 import model.*
 import repository.*
-import util.*
+import model.enum.*
 import java.math.BigDecimal
 import java.time.LocalDate
 
-//The purpose of SampleData is to seed the repositories with sample data so the console app has something to show right after startup,
-// and it does this calling SampleData.load() at the top of main()
-object SampleData {
+//The purpose of SampleDataGenerator is to seed the repositories with sample data so the console app has something to show right after startup,
+// and it does this calling SampleDataGenerator.load() at the top of main()
+object SampleDataGenerator {
 
     //Why? For instance creation
 fun load() {

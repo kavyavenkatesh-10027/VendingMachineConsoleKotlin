@@ -1,12 +1,15 @@
 package service
 
+import exception.CorruptedDataException
+import exception.UnknownEntityException
+import exception.VendingMachineException
 import model.Food
 import model.Slot
 import model.VendingMachine
 import repository.FoodRepository
 import repository.SlotRepository
 import repository.VendingMachineRepository
-import util.*
+import model.enum.*
 import java.time.LocalDate
 import kotlin.collections.component1
 import kotlin.collections.component2

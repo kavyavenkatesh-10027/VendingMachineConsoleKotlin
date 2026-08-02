@@ -2,9 +2,9 @@ package service
 
 import model.Food
 import repository.FoodRepository
-import util.FoodType
-import util.Location
-import util.VegNonVeg
+import model.enum.FoodType
+import model.enum.Location
+import model.enum.VegNonVeg
 import java.math.BigDecimal
 import java.time.LocalDate
 

@@ -1,6 +1,9 @@
 package model
 
-import util.*
+import exception.CorruptedDataException
+import exception.UnregisteredEntityException
+import generator.IDGenerator
+import model.enum.*
 import java.time.LocalDate
 
 //The purpose of VendingMachine is to represent a real-world vending machine and has methods to refactor itself, and it does this by using class.
@@ -9,7 +12,7 @@ class VendingMachine(
     val establishedOn: LocalDate,
     private val slotsInVendingMachine: MutableList<Slot> = mutableListOf()
 ) {
-    val vendingMachineId = Generator.generateVendingMachineId()
+    val vendingMachineId = IDGenerator.generateVendingMachineId()
     val drawer = Drawer()
 
     //Why? For encapsulating and restricting modification of the collection (Slot is mutable)
@@ -21,7 +24,7 @@ class VendingMachine(
         require(establishedOn <= LocalDate.now()) {"Established date must be on or before the current date"}
         slotsInVendingMachine.forEach { slot ->
             if (slot.vendingMachineId != vendingMachineId) {
-                throw VendingMachineException("Slot ${slot.slotId} belongs to a different vending machine")
+                throw CorruptedDataException("Slot ${slot.slotId} belongs to a different vending machine")
             }
         }
         //Runs along with primary const
@@ -29,14 +32,14 @@ class VendingMachine(
 
     fun addSlotToVendingMachine(slot: Slot) {
         if (slot.vendingMachineId != vendingMachineId) {
-            throw VendingMachineException("Slot belongs to a different vending machine")
+            throw CorruptedDataException("Slot belongs to a different vending machine")
         }
         slotsInVendingMachine.add(slot)
     }
 
     fun removeSlotFromVendingMachine(slot: Slot) {
         if (slot.vendingMachineId != vendingMachineId || !slotsInVendingMachine.contains(slot)) {
-            throw VendingMachineException("Slot does not belong to this vending machine")
+            throw UnregisteredEntityException("Slot does not belong to this vending machine")
         }
         slotsInVendingMachine.remove(slot)
     }

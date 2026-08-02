@@ -1,10 +1,12 @@
 package service
 
+import exception.ExistsAlreadyException
+import exception.UnknownEntityException
+import exception.UnregisteredEntityException
 import model.Slot
 import repository.FoodRepository
 import repository.SlotRepository
 import repository.VendingMachineRepository
-import util.*
 
 //The purpose of SlotService is to do Crud in slots , and it does this by object (Singleton class in Java).
 object SlotService {

@@ -1,10 +1,13 @@
 package service
 
+import exception.InsufficientPaymentException
+import exception.SupplyDemandException
+import exception.VendingMachineException
 import model.Purchase
 import model.VendingMachine
 import repository.FoodRepository
 import repository.PurchaseRepository
-import util.*
+import model.enum.*
 import java.math.BigDecimal
 
 //The purpose of PurchaseService is to handle purchases, and it does this by object (Singleton class in Java).

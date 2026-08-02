@@ -1,6 +1,7 @@
 package model
 
-import util.*
+import exception.UnknownEntityException
+import model.enum.*
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -41,14 +42,14 @@ class Food(
 
     //Why? Safe-adding
     fun addIngredient(ingredient: String) {
-        if (ingredient.isBlank()) throw VendingMachineException("A product cannot have a blank ingredient")
+        require(ingredient.isNotBlank()) { "A product cannot have a blank ingredient"}
         ingredients.add(ingredient)
     }
 
     //Why? Safe-removing
     fun removeIngredient(ingredient: String) {
         if (ingredient !in ingredients) {
-            throw VendingMachineException("Ingredient : $ingredient hasn't been listed for\n Food Id : $productId \n Food Name : $productName")
+            throw UnknownEntityException("Ingredient : $ingredient hasn't been listed for\n Food Id : $productId \n Food Name : $productName")
         }
         ingredients.remove(ingredient)
     }

@@ -1,7 +1,7 @@
-package singletonService
+package generator
 
-//The purpose of Generator is to generate values for the Ids automatically on instantiation (called internally), and it does this by using enum(stateless).
-object Generator {
+//The purpose of IDGenerator is to generate values for the Ids automatically on instantiation (called internally), and it does this by using enum(stateless).
+object IDGenerator {
 
     private var nextVendingMachineId = 1L
     private var nextSlotId = 1L

@@ -1,7 +1,7 @@
 package repository
 
-import util.ExistsAlreadyException
-import util.UnknownEntityException
+import exception.ExistsAlreadyException
+import exception.UnknownEntityException
 
 //The purpose of BaseRepository is to perform common data handling, and it does this by Abstact Generics.
 abstract class BaseRepository<T : Any> {//Now T can be anything other than null

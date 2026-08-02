@@ -1,8 +1,8 @@
-package util
+package exception
 
 //The purpose of VendingMachineException is to clearly communicate the cause for the breakdown is , and it does this by inheriting Runtime.//done
 //Why? To have a common type for all the exception for better readability and handling
-open class VendingMachineException(message: String) : RuntimeException(message)
+abstract class VendingMachineException(message: String) : RuntimeException(message)
 
 
 class SupplyDemandException(message: String)  : VendingMachineException(message)

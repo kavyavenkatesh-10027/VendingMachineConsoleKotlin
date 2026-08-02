@@ -13,7 +13,7 @@ fun main() {
 
     val consumerCaller = ConsumerUI()
 
-    SampleData.load()
+    SampleDataGenerator.load()
 
     var running = true
 

@@ -1,14 +1,15 @@
 package model
 
-import util.Generator
-import util.VendingMachineException
+import exception.SupplyDemandException
+import exception.UnregisteredEntityException
+import generator.IDGenerator
 
 //The purpose of Slot is to represent individual racks of a vending machine and do the necessary actions, and it does this by class.
 class Slot(
     val vendingMachineId: String,
     foodItemsInSlot: MutableMap<String, Int>
 ) {
-    val slotId = Generator.generateSlotId()
+    val slotId = IDGenerator.generateSlotId()
 
     // Defensive copy so external mutation of the caller's map can't corrupt slot state.
     private val foodItemsInSlot: MutableMap<String, Int> = foodItemsInSlot.toMutableMap()
@@ -35,7 +36,7 @@ class Slot(
     fun addMoreOfFoodItemToSlot(foodId: String, quantity: Int) {
         require(quantity > 0) {"Quantity must be greater than zero"}
         val current = foodItemsInSlot[foodId]
-            ?: throw VendingMachineException("Food $foodId is not present in slot $slotId")
+            ?: throw UnregisteredEntityException("Food $foodId is not present in slot $slotId")
         foodItemsInSlot[foodId] = current + quantity
     }
 
@@ -43,16 +44,16 @@ class Slot(
     fun removeFoodItemFromSlot(foodId: String, quantity: Int) {
         require(quantity > 0) {"Quantity must be greater than zero"}
         val current = foodItemsInSlot[foodId]
-            ?: throw VendingMachineException("Food $foodId is not present in slot $slotId")
+            ?: throw UnregisteredEntityException("Food $foodId is not present in slot $slotId")
         if (quantity > current) {
-            throw VendingMachineException("Cannot remove $quantity of food $foodId; only $current present in slot $slotId")
+            throw SupplyDemandException("Cannot remove $quantity of food $foodId; only $current present in slot $slotId")
         }
         foodItemsInSlot[foodId] = current - quantity
     }
 
     //Why? To validate the food type before collectively removing food items
     fun removeFoodTypeFromSlot(foodId: String) {
-        if (!foodItemsInSlot.contains(foodId)) throw VendingMachineException("Food $foodId is not present in slot $slotId")
+        if (!foodItemsInSlot.contains(foodId)) throw UnregisteredEntityException("Food $foodId is not present in slot $slotId")
         foodItemsInSlot.remove(foodId)
     }
 

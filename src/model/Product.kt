@@ -1,6 +1,7 @@
 package model
 
-import util.*
+import generator.IDGenerator
+import model.enum.*
 import java.math.BigDecimal
 import java.time.LocalDate
 
@@ -15,7 +16,7 @@ open class Product(
     val manufacturingDate: LocalDate,
     var warning: String? = null
 ) {
-    val productId = Generator.generateProductId()
+    val productId = IDGenerator.generateProductId()
 
     init {
         require(productName.isNotBlank()) { "Product must have a name" }

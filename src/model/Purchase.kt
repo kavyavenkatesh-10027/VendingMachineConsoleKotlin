@@ -1,6 +1,6 @@
 package model
 
-import util.*
+import generator.IDGenerator
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
@@ -13,7 +13,7 @@ data class Purchase(
     val purchaseTime: LocalDateTime = LocalDateTime.now()
 ) {
 
-    val purchaseId: String = Generator.generatePurchaseId()
+    val purchaseId: String = IDGenerator.generatePurchaseId()
 
     //Why? For encapsulating and restricting modification of the collection
     fun getQuantityOfProductsPurchased(): Map<String, Int> {
