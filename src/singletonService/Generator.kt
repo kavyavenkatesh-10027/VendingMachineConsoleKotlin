@@ -1,4 +1,4 @@
-package util
+package singletonService
 
 //The purpose of Generator is to generate values for the Ids automatically on instantiation (called internally), and it does this by using enum(stateless).
 object Generator {
