@@ -15,7 +15,7 @@ import kotlin.plus
 //The purpose of CurrencyService is to handle drawer operations, and it does this by object (Singleton class in Java).
 object CurrencyService {
 
-    //Why? For cash management of the drawer on input
+    //Why? For maintaining drawer data consistency on accepting payment
     fun acceptPayment(drawer: Drawer, inserted: Map<IndianCurrency, Int>): BigDecimal {var total = BigDecimal.ZERO
         for ((denomination, count) in inserted) {  // destructuring map entries with for ((k, v) in $%map)
             require(count > 0) {"Count cannot be zero or negative." }
@@ -65,7 +65,7 @@ object CurrencyService {
         }
     }
 
-    //Why? To validate count before refilling drawer with denominations
+    //Why? To validate count before refilling drawer with denominations, again drawer consistency
     fun addToDrawer(drawer: Drawer, denomination: IndianCurrency, count: Int) {
         require (count <= 0) {"Count cannot be zero or negative." }
         drawer.add(denomination, count)
