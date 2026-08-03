@@ -11,8 +11,6 @@ import java.util.EnumMap
 //The purpose of AdminUI is to get input from the admin and display the fetched data and status of the system in a human friendly manner, and it does this by using class that implements the model.enum(Interface Interactable).
 class AdminUI() : Interactable {
 
-    private val controller = AdminController()
-
     //Why? For looping the options till exit request
     fun show() {
         var running = true
@@ -81,7 +79,7 @@ class AdminUI() : Interactable {
         val establishedOn = readDate("Established on (yyyy-MM-dd): ")
         displayFoodMenu()
         val firstSlotFoodItems = readFoodItemsMap("first slot")
-        val vm = controller.createVendingMachine(location, establishedOn, firstSlotFoodItems)
+        val vm = AdminController.createVendingMachine(location, establishedOn, firstSlotFoodItems)
         println("\nVending machine created successfully!")
         println(vm)
     }
@@ -91,7 +89,7 @@ class AdminUI() : Interactable {
         println("\n--- View Vending Machine ---")
         displayVendingMachineMenu()
         val vmId = prompt("Vending machine ID to view: ")
-        val vm = controller.viewVendingMachine(vmId)
+        val vm = AdminController.viewVendingMachine(vmId)
         println("\n $vm")
     }
 
@@ -100,7 +98,7 @@ class AdminUI() : Interactable {
         println("\n--- Remove Vending Machine ---")
         displayVendingMachineMenu()
         val vmId = prompt("Vending machine ID to remove: ")
-        controller.removeVendingMachine(vmId)
+        AdminController.removeVendingMachine(vmId)
         println("Vending machine $vmId and all its slots have been removed.")
     }
 
@@ -111,7 +109,7 @@ class AdminUI() : Interactable {
         val vendingMachineId = prompt("Vending machine ID: ")
         displayFoodMenu()
         val foodItems = readFoodItemsMap("new slot")
-        val slot = controller.addSlotToVendingMachine(vendingMachineId, foodItems)
+        val slot = AdminController.addSlotToVendingMachine(vendingMachineId, foodItems)
         println("\nSlot added successfully!")
         println(slot)
     }
@@ -121,7 +119,7 @@ class AdminUI() : Interactable {
         println("\n--- Remove Slot ---")
         displaySlotMenu()
         val slotId = prompt("Slot ID to remove: ")
-        controller.removeSlot(slotId)
+        AdminController.removeSlot(slotId)
         println("Slot $slotId removed.")
     }
 
@@ -144,7 +142,7 @@ class AdminUI() : Interactable {
 
         val foodType = readEnum(FoodType::class.java, "Food type")
 
-        val food = controller.registerFood(
+        val food = AdminController.registerFood(
             productName, brand, description, warning,
             price, manufacturingLocation, manufacturingDate, vegOrNonVeg,
             ingredients, expiryDate, foodType
@@ -158,7 +156,7 @@ class AdminUI() : Interactable {
         println("\n--- Remove Food Item ---")
         displayFoodMenu()
         val foodId = prompt("Food ID to remove: ")
-        controller.removeFood(foodId)
+        AdminController.removeFood(foodId)
         println("Food $foodId removed from registry and from all slots.")
     }
 
@@ -170,7 +168,7 @@ class AdminUI() : Interactable {
         displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val quantity = readInt("Quantity")
-        controller.addNewFoodTypeToSlot(slotId, foodId, quantity)
+        AdminController.addNewFoodTypeToSlot(slotId, foodId, quantity)
         println("Food added to slot successfully.")
     }
 
@@ -182,7 +180,7 @@ class AdminUI() : Interactable {
         displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val quantity = readInt("Quantity to add")
-        controller.refillFoodInSlot(slotId, foodId, quantity)
+        AdminController.refillFoodInSlot(slotId, foodId, quantity)
         println("Slot refilled successfully.")
     }
 
@@ -192,7 +190,7 @@ class AdminUI() : Interactable {
         displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val newDescription = prompt("New description: ")
-        controller.editFoodDescription(foodId, newDescription)
+        AdminController.editFoodDescription(foodId, newDescription)
         println("Description updated.")
     }
 
@@ -202,7 +200,7 @@ class AdminUI() : Interactable {
         displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val newName = prompt("New name: ")
-        controller.editFoodName(foodId, newName)
+        AdminController.editFoodName(foodId, newName)
         println("Name updated.")
     }
 
@@ -212,7 +210,7 @@ class AdminUI() : Interactable {
         displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val newPrice = readBigDecimal("New price: ")
-        controller.editFoodPrice(foodId, newPrice)
+        AdminController.editFoodPrice(foodId, newPrice)
         println("Price updated.")
     }
 
@@ -222,7 +220,7 @@ class AdminUI() : Interactable {
         displayFoodMenu()
         val foodId = prompt("Food ID: ")
         val newBrand = prompt("New brand: ")
-        controller.editFoodBrand(foodId, newBrand)
+        AdminController.editFoodBrand(foodId, newBrand)
         println("Brand updated.")
     }
 
@@ -233,13 +231,13 @@ class AdminUI() : Interactable {
         val foodId = prompt("Food ID: ")
         var newWarning: String? = prompt("New warning (press Enter to clear): ")
         if (newWarning!!.isEmpty()) newWarning = null
-        controller.editFoodWarning(foodId, newWarning)
+        AdminController.editFoodWarning(foodId, newWarning)
         println("Warning updated.")
     }
 
     //Why? UI and presentation.
     private fun viewAllVendingMachines() {
-        val machines = controller.viewAllVendingMachines()
+        val machines = AdminController.viewAllVendingMachines()
         if (machines.isEmpty()) { println("No vending machines registered yet."); return }
         println("\n===== All Vending Machines =====")
         machines.forEach { println("$it\n--------------------------------") }
@@ -247,7 +245,7 @@ class AdminUI() : Interactable {
 
     //Why? UI and presentation.
     private fun viewAllFoods() {
-        val foods = controller.getAllFoods()
+        val foods = AdminController.getAllFoods()
         if (foods.isEmpty()) { println("No food items registered yet."); return }
         println("\n===== All Food Items =====")
         foods.forEach { println("$it\n-------------------------") }
@@ -258,12 +256,12 @@ class AdminUI() : Interactable {
         println("\n--- Product Count at Machine ---")
         displayVendingMachineMenu()
         val vmId = prompt("Vending machine ID: ")
-        val stockMap = controller.getProductCountForMachine(vmId)
+        val stockMap = AdminController.getProductCountForMachine(vmId)
         if (stockMap.isEmpty()) { println("No products currently stocked."); return }
         println("\n  %-14s %-22s %8s  %6s".format("Food ID", "Name", "Price", "Stock"))
         println("  ──────────────────────────────────────────────────")
         for ((foodId, qty) in stockMap) {
-            val food = controller.getFoodById(foodId)
+            val food = AdminController.getFoodById(foodId)
             println("  %-14s %-22s Rs.%-5s  %6d".format(food.productId, food.productName, food.price, qty))
         }
         val total = stockMap.values.sum()
@@ -276,10 +274,10 @@ class AdminUI() : Interactable {
         displayVendingMachineMenu()
         val vmId = prompt("Vending machine ID: ")
         println("\n===== Cash Drawer — $vmId =====")
-        controller.getDenominationBreakdown(vmId).forEach { (denom, count) ->
+        AdminController.getDenominationBreakdown(vmId).forEach { (denom, count) ->
             println("  Rs.%-4d  x  %d".format(denom.value, count))
         }
-        println("  Total : Rs.${controller.getTotalCashInMachine(vmId)}")
+        println("  Total : Rs.${AdminController.getTotalCashInMachine(vmId)}")
     }
 
     //Why? Easy cash refilling (UX).
@@ -304,17 +302,17 @@ class AdminUI() : Interactable {
 
         if (denominations.isEmpty()) { println("Nothing added."); return }
 
-        controller.addCashToDrawer(vmId, denominations)
+        AdminController.addCashToDrawer(vmId, denominations)
         println("\nCash added. Current drawer for $vmId:")
-        controller.getDenominationBreakdown(vmId).forEach { (denom, count) ->
+        AdminController.getDenominationBreakdown(vmId).forEach { (denom, count) ->
             println("  Rs.%-4d  x  %d".format(denom.value, count))
         }
-        println("  Total : Rs.${controller.getTotalCashInMachine(vmId)}")
+        println("  Total : Rs.${AdminController.getTotalCashInMachine(vmId)}")
     }
 
     //Why? UI and presentation.
     private fun viewPurchaseHistory() {
-        val purchases = controller.getAllPurchases()
+        val purchases = AdminController.getAllPurchases()
         if (purchases.isEmpty()) { println("No purchases recorded yet."); return }
         println("\n===== Purchase History =====")
         for (p in purchases) {
@@ -330,7 +328,7 @@ class AdminUI() : Interactable {
 
     //Why? For UX, a short menu display for all vending machine, for easy selection for the user
     private fun displayVendingMachineMenu(){
-        val allVendingMachine: Set<VendingMachine> = controller.viewAllVendingMachines()
+        val allVendingMachine: Set<VendingMachine> = AdminController.viewAllVendingMachines()
         println("""
             
             -----Vending Machine Menu-----
@@ -344,7 +342,7 @@ class AdminUI() : Interactable {
 
     //Why? For UX, a short menu display for all vending machine, for easy selection for the user
     private fun displayFoodMenu(){
-        val allFoods: Set<Food> = controller.getAllFoods()
+        val allFoods: Set<Food> = AdminController.getAllFoods()
         println("""
             
             -----Food Menu-----
@@ -358,7 +356,7 @@ class AdminUI() : Interactable {
 
     //Why? For UX, a short menu display for all vending machine, for easy selection for the user
     private fun displaySlotMenu(){
-        val allSlots: Set<Slot> = controller.getAllSlots()
+        val allSlots: Set<Slot> = AdminController.getAllSlots()
         println("""
             
             -----Slot Menu-----

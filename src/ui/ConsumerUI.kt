@@ -12,8 +12,6 @@ import kotlin.plus
 //The purpose of AdminUI is to get input from the admin and display the fetched data and teh status of the request in a human friendly manner, and it does this by using class that implements the model.enum(Interface Interactable).
 class ConsumerUI() : Interactable {
 
-    private val controller = ConsumerController()
-
     //Why? For looping the options till exit request
     fun show() {
         var running = true
@@ -41,7 +39,7 @@ class ConsumerUI() : Interactable {
 
     //Why? UI and presentation, along with forward calls, along with forward calls
     private fun viewAllMachines() {
-        val machines = controller.viewAllVendingMachines()
+        val machines = ConsumerController.viewAllVendingMachines()
         println("\n=====================================")
         println("  VENDING MACHINES")
         println("=====================================")
@@ -57,7 +55,7 @@ class ConsumerUI() : Interactable {
 
     //Why? UI and presentation, along with forward calls, along with forward calls
     private fun printAvailableProducts(vmId: String) {
-        val products = controller.viewAvailableProducts(vmId)
+        val products = ConsumerController.viewAvailableProducts(vmId)
         println("\n=====================================")
         println("  AVAILABLE PRODUCTS")
         println("=====================================")
@@ -65,7 +63,7 @@ class ConsumerUI() : Interactable {
         println("  %-14s %-22s %8s  %6s  %s".format("Food ID", "Name", "Price", "Stock", "Type"))
         println("─────────────────────────────────────")
         for (food in products) {
-            val qty = controller.getAvailableStock(vmId, food.productId)
+            val qty = ConsumerController.getAvailableStock(vmId, food.productId)
             println("  %-14s %-22s Rs.%-5s  %6d  %s / %s".format(
                 food.productId, food.productName, food.price, qty, food.foodType, food.vegOrNonVeg
             ))
@@ -76,7 +74,7 @@ class ConsumerUI() : Interactable {
     private fun buyProducts() {
         viewAllMachines()
         val vmId = prompt("Vending machine ID")
-        val products = controller.viewAvailableProducts(vmId)
+        val products = ConsumerController.viewAvailableProducts(vmId)
         if (products.isEmpty()) { println("\n  No products in stock at this machine."); return }
 
         printAvailableProducts(vmId)
@@ -84,13 +82,13 @@ class ConsumerUI() : Interactable {
         val cart = buildCart(vmId)
         if (cart.isEmpty()) { println("\n  Nothing added to cart. Returning to menu."); return }
 
-        val total = controller.getCartTotal(cart)
+        val total = ConsumerController.getCartTotal(cart)
         println("\n  Cart total : Rs.$total")
 
         val payment = collectPayment(total)
         if (payment.isEmpty()) { println("  Purchase cancelled — no payment received."); return }
 
-        val purchase = controller.buyProducts(vmId, cart, payment)
+        val purchase = ConsumerController.buyProducts(vmId, cart, payment)
         printReceipt(purchase)
     }
 
@@ -103,7 +101,7 @@ class ConsumerUI() : Interactable {
             if (foodId.isBlank()) break
 
             val available = try {
-                controller.getAvailableStock(vmId, foodId)
+                ConsumerController.getAvailableStock(vmId, foodId)
             } catch (e: VendingMachineException) {
                 println("    [!] ${e.message}"); continue
             }
