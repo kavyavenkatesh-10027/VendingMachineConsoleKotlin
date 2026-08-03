@@ -17,7 +17,7 @@ import java.math.BigDecimal
 import java.time.LocalDate
 
 //The purpose of AdminController is to direct requests from an admin coming from the AdminUI to the correct service class and its methods, and it does this by class.
-class AdminController : BaseController() {
+object AdminController : BaseController() {
 
     /***
      *All the methods in AdminController class -
