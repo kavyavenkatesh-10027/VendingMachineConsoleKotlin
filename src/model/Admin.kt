@@ -13,17 +13,6 @@ class Admin(
 
     val adminId: String = IDGenerator.generateAdminId()
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is Admin) return false
-
-        return adminId == other.adminId
-    }
-
-    override fun hashCode(): Int {
-        return adminId.hashCode()
-    }
-
     override fun toString(): String {
         return super.toString() + "\nAdmin ID : $adminId"
     }
