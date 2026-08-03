@@ -44,14 +44,6 @@ class VendingMachine(
         slotsInVendingMachine.remove(slot)
     }
 
-//    override fun equals(other: Any?): Boolean {
-//        if (this === other) return true
-//        if (other !is VendingMachine) return false
-//        return vendingMachineId == other.vendingMachineId
-//    }
-//
-//    override fun hashCode(): Int = vendingMachineId.hashCode()
-
     override fun toString(): String =
         """
     Vending Machine ID      : $vendingMachineId
