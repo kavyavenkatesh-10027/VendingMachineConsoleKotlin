@@ -1,6 +1,6 @@
 package model
 
-import exception.CorruptedDataException
+import exception.SlotVendingMachineMismatchException
 import exception.UnregisteredEntityException
 import generator.IDGenerator
 import model.enum.*
@@ -24,7 +24,7 @@ class VendingMachine(
         require(establishedOn <= LocalDate.now()) {"Established date must be on or before the current date"}
         slotsInVendingMachine.forEach { slot ->
             if (slot.vendingMachineId != vendingMachineId) {
-                throw CorruptedDataException("Slot ${slot.slotId} belongs to a different vending machine")
+                throw SlotVendingMachineMismatchException(slot.slotId)
             }
         }
         //Runs along with primary const
@@ -32,7 +32,7 @@ class VendingMachine(
 
     fun addSlotToVendingMachine(slot: Slot) {
         if (slot.vendingMachineId != vendingMachineId) {
-            throw CorruptedDataException("Slot belongs to a different vending machine")
+            throw SlotVendingMachineMismatchException(slot.slotId)
         }
         slotsInVendingMachine.add(slot)
     }
