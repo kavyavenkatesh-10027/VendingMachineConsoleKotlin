@@ -42,7 +42,7 @@ object SlotService {
     fun refillFoodInSlot(slotId: String, foodId: String, quantity: Int) {
         val slot = getSlotById(slotId)
         if (!slot.getFoodItemsInSlot().containsKey(foodId)) {
-            throw UnregisteredEntityException("Food $foodId is not in slot $slotId. Use addNewFoodTypeToSlot instead.")
+            throw UnregisteredEntityException("Food $foodId is not in slot $slotId. Use 'Add New Food Type To Slot' instead.")
         }
         slot.addMoreOfFoodItemToSlot(foodId, quantity)//Validation in model class
     }

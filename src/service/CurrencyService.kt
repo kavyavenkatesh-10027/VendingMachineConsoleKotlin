@@ -18,8 +18,7 @@ object CurrencyService {
     //Why? For maintaining drawer data consistency on accepting payment
     fun acceptPayment(drawer: Drawer, inserted: Map<IndianCurrency, Int>): BigDecimal {var total = BigDecimal.ZERO
         for ((denomination, count) in inserted) {  // destructuring map entries with for ((k, v) in $%map)
-            require(count > 0) {"Count cannot be zero or negative." }
-            drawer.add(denomination, count)
+            addToDrawer(drawer, denomination, count)
             total += BigDecimal.valueOf(denomination.value.toLong()) * BigDecimal.valueOf(count.toLong())
         }
         return total
@@ -27,7 +26,7 @@ object CurrencyService {
 
     //Why? Greedy algorithm implementation.
     fun makeChange(drawer: Drawer, changeAmount: BigDecimal): Map<IndianCurrency, Int> {
-        if (changeAmount < BigDecimal.ZERO) throw IllegalNegativeValueException("Change amount cannot be negative.")
+        if (changeAmount < BigDecimal.ZERO) throw IllegalNegativeValueException("Change amount")
         if (changeAmount.compareTo(BigDecimal.ZERO) == 0) return emptyMap()
 
         val change = EnumMap<IndianCurrency, Int>(IndianCurrency::class.java)//enum requires a java class
@@ -48,26 +47,29 @@ object CurrencyService {
         }
 
         if (remaining != BigDecimal.ZERO) {
-            throw InsufficientDenominationForChangeException("Machine cannot make exact change of Rs.$changeAmount.")
+            throw InsufficientDenominationForChangeException(changeAmount)
         }
 
-        for ((denom, count) in change) {
-            drawer.deduct(denom, count)
-        }
+        removeFromDrawer(drawer, change)
         return change
     }
 
     //Why? To ensure that an invalid purchase returns entered money to customer
     fun refund(drawer: Drawer, inserted: Map<IndianCurrency, Int>) {
         if (inserted.isEmpty()) return
-        for ((denom, count) in inserted) {
-            drawer.deduct(denom, count)
-        }
+        removeFromDrawer(drawer, inserted)
     }
 
     //Why? To validate count before refilling drawer with denominations, again drawer consistency
     fun addToDrawer(drawer: Drawer, denomination: IndianCurrency, count: Int) {
         require (count <= 0) {"Count cannot be zero or negative." }
         drawer.add(denomination, count)
+    }
+
+    fun removeFromDrawer(drawer: Drawer, denomCountRelation: Map<IndianCurrency, Int>) {
+        for ((denom, count) in denomCountRelation) {
+            require (count <= 0) {"Count cannot be zero or negative." }
+            drawer.deduct(denom, count)
+        }
     }
 }

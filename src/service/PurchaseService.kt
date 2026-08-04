@@ -1,7 +1,7 @@
 package service
 
 import exception.InsufficientPaymentException
-import exception.SupplyDemandException
+import exception.AvailabilityRequirementException
 import exception.VendingMachineException
 import model.Purchase
 import model.VendingMachine
@@ -28,7 +28,7 @@ object PurchaseService {
             val food = FoodRepository.findById(foodId)
             val stock = getStockInMachine(vm, foodId)
             if (stock < requestedQty) {
-                throw SupplyDemandException("Insufficient stock for '${food.productName}'. Available: $stock")
+                throw AvailabilityRequirementException("Insufficient stock for '${food.productName}'. Available: $stock")
             }
         }
 
@@ -37,9 +37,7 @@ object PurchaseService {
 
         if (amountPaid < total) {
             CurrencyService.refund(vm.drawer, inserted)
-            throw InsufficientPaymentException(
-                "Insufficient payment. Total: Rs.$total, Paid: Rs.$amountPaid\nCollect refund from the inserting plate"
-            )
+            throw InsufficientPaymentException( total, amountPaid )
         }
 
         val changeAmount = amountPaid - total

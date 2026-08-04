@@ -1,6 +1,6 @@
 package model
 
-import exception.SupplyDemandException
+import exception.AvailabilityRequirementException
 import exception.UnregisteredEntityException
 import generator.IDGenerator
 
@@ -46,7 +46,7 @@ class Slot(
         val current = foodItemsInSlot[foodId]
             ?: throw UnregisteredEntityException("Food $foodId is not present in slot $slotId")
         if (quantity > current) {
-            throw SupplyDemandException("Cannot remove $quantity of food $foodId; only $current present in slot $slotId")
+            throw AvailabilityRequirementException("Cannot remove $quantity of food $foodId; only $current present in slot $slotId")
         }
         foodItemsInSlot[foodId] = current - quantity
     }
