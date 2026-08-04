@@ -22,7 +22,7 @@ abstract class BaseRepository<T : Any> {//Now T can be anything other than null
 
     //Why? To avoid duplication
     fun findById(id: String): T {
-        return store[id] ?: throw UnknownEntityException("Entity of Id: $id does not exist")
+        return store[id] ?: throw UnknownEntityException(id, "Entity")
     }
 
     //Why? To avoid data redundancy
@@ -31,7 +31,7 @@ abstract class BaseRepository<T : Any> {//Now T can be anything other than null
     //Why? To remove after check
     open fun removeById(id: String) {
         if (!existsById(id)) {
-            throw UnknownEntityException("Entity of Id: $id does not exist")
+            throw UnknownEntityException(id, "Entity")
         }
         store.remove(id)
     }

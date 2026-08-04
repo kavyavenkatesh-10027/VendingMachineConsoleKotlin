@@ -21,10 +21,10 @@ object SlotService {
     fun addNewFoodTypeToSlot(slotId: String, foodId: String, quantity: Int) {
         val slot = getSlotById(slotId)
         if (!FoodRepository.existsById(foodId)) {
-            throw UnknownEntityException("Food with ID $foodId does not exist. Register the food first.")
+            throw UnknownEntityException(foodId, "Food","Register the food first.")
         }
         if (slot.getFoodItemsInSlot().containsKey(foodId)) {
-            throw ExistsAlreadyException("Food $foodId is already in slot $slotId. Use refillFoodInSlot instead.")
+            throw ExistsAlreadyException("Food : $foodId already exists. Use refillFoodInSlot instead.")
         }
         slot.addNewFoodTypeToSlot(foodId, quantity)
     }
@@ -42,7 +42,7 @@ object SlotService {
     fun refillFoodInSlot(slotId: String, foodId: String, quantity: Int) {
         val slot = getSlotById(slotId)
         if (!slot.getFoodItemsInSlot().containsKey(foodId)) {
-            throw UnregisteredEntityException("Food $foodId is not in slot $slotId. Use 'Add New Food Type To Slot' instead.")
+            throw UnregisteredEntityException("Food", foodId, "Slot", slotId,"Use 'Add New Food Type To Slot' instead.")
         }
         slot.addMoreOfFoodItemToSlot(foodId, quantity)//Validation in model class
     }

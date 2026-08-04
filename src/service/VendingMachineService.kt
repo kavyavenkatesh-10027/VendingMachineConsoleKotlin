@@ -69,7 +69,7 @@ object VendingMachineService {
                 try {
                     FoodRepository.findById(foodId)
                 } catch (_: VendingMachineException) {
-                    throw CorruptedDataException("Vending machine data has been corrupted. $vendingMachineId contains unregistered food item, ID : $foodId ")
+                    throw CorruptedDataException("Vending machine, ID : $vendingMachineId contains unregistered food item, ID : $foodId ")
                 }
             }
             .toSet()
@@ -90,7 +90,7 @@ object VendingMachineService {
     //Why? For machine specific single product-quantity review.
     fun getAvailableQuantityForOneProduct(vendingMachineId: String, foodId: String): Int {
         if (!FoodRepository.existsById(foodId)) {
-            throw UnknownEntityException("Cannot check quantity for a product that does not exist")
+            throw UnknownEntityException(foodId, "Food","Cannot check quantity for a product that does not exist")
         }
         val vm = getVendingMachineById(vendingMachineId)
         return vm.getSlotsInVendingMachine().sumOf { slot -> slot.getFoodItemsInSlot()[foodId] ?: 0 }
@@ -99,7 +99,7 @@ object VendingMachineService {
     //Why? For validating before removing. Ensuring cascading deletion of slots and food items within, then and finally removing vending machine from Repo.
     fun removeVendingMachine(vendingMachineId: String) {
         if (!VendingMachineRepository.existsById(vendingMachineId)) {
-            throw UnknownEntityException("Vending machine with ID $vendingMachineId does not exist")
+            throw UnknownEntityException(vendingMachineId,"Vending machine")
         }
         SlotRepository.findByVendingMachineId(vendingMachineId).forEach {
             SlotRepository.removeById(it.slotId)
@@ -116,7 +116,7 @@ object VendingMachineService {
         for ((foodId, qty) in foodItems) {
             require(foodId.isNotBlank()) {"Food ID in slot cannot be empty."}
             require(qty > 0) { "Quantity for food '$foodId' must be greater than zero."}
-            if (!FoodRepository.existsById(foodId)) throw UnknownEntityException("No food of ID: $foodId has been registered")
+            if (!FoodRepository.existsById(foodId)) throw UnknownEntityException(foodId, "Food")
         }
     }
 }

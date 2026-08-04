@@ -36,7 +36,7 @@ class Slot(
     fun addMoreOfFoodItemToSlot(foodId: String, quantity: Int) {
         require(quantity > 0) {"Quantity must be greater than zero"}
         val current = foodItemsInSlot[foodId]
-            ?: throw UnregisteredEntityException("Food $foodId is not present in slot $slotId")
+            ?: throw UnregisteredEntityException("Food", foodId,  "Slot", slotId, "User 'Add New Food Type' instead")
         foodItemsInSlot[foodId] = current + quantity
     }
 
@@ -44,7 +44,7 @@ class Slot(
     fun removeFoodItemFromSlot(foodId: String, quantity: Int) {
         require(quantity > 0) {"Quantity must be greater than zero"}
         val current = foodItemsInSlot[foodId]
-            ?: throw UnregisteredEntityException("Food $foodId is not present in slot $slotId")
+            ?: throw UnregisteredEntityException("Food", foodId,  "Slot", slotId)
         if (quantity > current) {
             throw AvailabilityRequirementException("Cannot remove $quantity of food $foodId; only $current present in slot $slotId")
         }
@@ -53,7 +53,7 @@ class Slot(
 
     //Why? To validate the food type before collectively removing food items
     fun removeFoodTypeFromSlot(foodId: String) {
-        if (!foodItemsInSlot.contains(foodId)) throw UnregisteredEntityException("Food $foodId is not present in slot $slotId")
+        if (!foodItemsInSlot.contains(foodId)) throw UnregisteredEntityException("Food", foodId,  "Slot", slotId)
         foodItemsInSlot.remove(foodId)
     }
 

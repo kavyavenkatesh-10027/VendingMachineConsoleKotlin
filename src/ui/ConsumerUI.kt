@@ -74,8 +74,6 @@ class ConsumerUI() : Interactable {
     private fun buyProducts() {
         viewAllMachines()
         val vmId = prompt("Vending machine ID")
-        val products = ConsumerController.viewAvailableProducts(vmId)
-        if (products.isEmpty()) { println("\n  No products in stock at this machine."); return }
 
         printAvailableProducts(vmId)
 

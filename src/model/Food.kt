@@ -49,7 +49,7 @@ class Food(
     //Why? Safe-removing
     fun removeIngredient(ingredient: String) {
         if (ingredient !in ingredients) {
-            throw UnknownEntityException("Ingredient : $ingredient hasn't been listed for\n Food Id : $productId \n Food Name : $productName")
+            throw UnknownEntityException(ingredient, "Ingredient" )
         }
         ingredients.remove(ingredient)
     }

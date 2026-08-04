@@ -39,7 +39,7 @@ class VendingMachine(
 
     fun removeSlotFromVendingMachine(slot: Slot) {
         if (slot.vendingMachineId != vendingMachineId || !slotsInVendingMachine.contains(slot)) {
-            throw UnregisteredEntityException("Slot does not belong to this vending machine")
+            throw UnregisteredEntityException("Slot", slot.slotId,"Vending Machine", vendingMachineId)
         }
         slotsInVendingMachine.remove(slot)
     }

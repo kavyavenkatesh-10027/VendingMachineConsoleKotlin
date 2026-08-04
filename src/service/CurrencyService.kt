@@ -60,12 +60,13 @@ object CurrencyService {
         removeFromDrawer(drawer, inserted)
     }
 
-    //Why? To validate count before refilling drawer with denominations, again drawer consistency
+    //Why? To validate count before refilling drawer with denominations
     fun addToDrawer(drawer: Drawer, denomination: IndianCurrency, count: Int) {
         require (count <= 0) {"Count cannot be zero or negative." }
         drawer.add(denomination, count)
     }
 
+    //Why? To avoid duplication and to validate count before removing denominations from the drawer
     fun removeFromDrawer(drawer: Drawer, denomCountRelation: Map<IndianCurrency, Int>) {
         for ((denom, count) in denomCountRelation) {
             require (count <= 0) {"Count cannot be zero or negative." }
